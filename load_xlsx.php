@@ -52,7 +52,7 @@ foreach ($objPHPExcelModules->getWorksheetIterator() as $worksheet) {
     // Get teh date of the first one
     $row = 1;
     $col = 3; // columns are 0 based, now 1 based
-    $myString = $worksheet->getCell([$col, $row])->getValue();
+    $myString = getDateStrFromCell($worksheet,$row,$col);//$worksheet->getCell([$col, $row])->getValue();
     $start_date = $myString;
     //$start_date2 = date('d-m-Y', \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($worksheet->getCell([$col, $row])->getValue()));
     $start_date2 = getDateStrFromCell($worksheet,$row,$col);
@@ -77,7 +77,7 @@ foreach ($objPHPExcelModules->getWorksheetIterator() as $worksheet) {
         $family_name = $worksheet->getCell([$col, $row])->getValue();
         $scores = array();
         for ($i = 1; $i <= 18; $i++) {
-            $col = $num_start_col + ($i) * 3;
+            $col = $num_start_col + ($i-1) * 3;
             $myString = $worksheet->getCell([$col, $row])->getValue();
             if($myString == ""){
                 $scores[] = null;

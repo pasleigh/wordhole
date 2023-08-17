@@ -69,6 +69,12 @@ var myline_chart = {
                 + '">● </span><B>' + this.series.name + '</B> <BR>Round total: ' + this.y
                 + '<BR>This hole ['+ this.point.h+']: ' + this.point.v+' '+this.point.c ;
         }
+    },
+    exporting: {
+        filename: 'wordhole_chart',
+        scale: 2,
+        sourceWidth: 1000,
+        //sourceHeight: 600
     }
 
 };
