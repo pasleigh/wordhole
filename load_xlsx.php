@@ -1,25 +1,24 @@
 <?php
-//(@include_once("./frameworks/php_classes/PHPExcel.php")) OR die("Cannot read PHPExcel.php file<BR>");
-//(@include_once("./frameworks/php_classes/PHPExcel/IOFactory.php")) OR die("Cannot read IOFactory.php file<BR>");
+(@include_once("./database_functions.php")) OR die("Cannot read database_functions.php file<BR>");
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 require_once './vendor/autoload.php';
 
-function getDateStrFromCell($worksheet,$row,$col){
+function getDateStrFromCell($worksheet,$row,$col,$date_format = 'd-m-Y'){
     $cellDataType = $worksheet->getCell([$col, $row])->getDataType();
     if ($cellDataType == 'n') {
         // Date format
         $mydate = $worksheet->getCell([$col, $row])->getValue();
         $mydate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($mydate);
-        $mydate_str = $mydate->format('d-m-Y'); // 02-09-1963
+        $mydate_str = $mydate->format($date_format); // 02-09-1963
         //$intro_week_s2 = $intro_week_sd->format('j/M/Y'); // 2/sep/163
     } elseif ($cellDataType == 'f'){
         // Formula (hopefully a date)
         $mydate = $worksheet->getCell([$col, $row])->getOldCalculatedValue();
         $mydate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($mydate);
-        $mydate_str = $mydate->format('d-m-Y'); // 02-09-1963
+        $mydate_str = $mydate->format($date_format); // 02-09-1963
     }else{
         // let just take the value
         $mydate_str = $worksheet->getCell([$col, $row])->getValue();
@@ -43,23 +42,22 @@ foreach ($objPHPExcelModules->getWorksheetIterator() as $worksheet) {
     $highestColIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestCol);
     $nrColumns = ord($highestCol) - 64;
 
-    // Get the date updated from row 2, col 2
+    // Get the par from row 1, col 2
     $row = 1;
-    $col = 2; // columns are 0 based, now 1 based
+    $col = 2; // columns are now 1 based
     $myString = $worksheet->getCell([$col, $row])->getValue();
     $par = $myString;
 
-    // Get teh date of the first one
+    // Get the date of the first wordle
     $row = 1;
-    $col = 3; // columns are 0 based, now 1 based
-    $myString = getDateStrFromCell($worksheet,$row,$col);//$worksheet->getCell([$col, $row])->getValue();
+    $col = 3; // columns are now 1 based
+    $myString = getDateStrFromCell($worksheet,$row,$col);//'d-m-Y == 24-09-1963
     $start_date = $myString;
-    //$start_date2 = date('d-m-Y', \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($worksheet->getCell([$col, $row])->getValue()));
     $start_date2 = getDateStrFromCell($worksheet,$row,$col);
 
     // Get the wordle number of the first one
     $row = 2;
-    $col = 3; // columns are 0 based, now 1 based
+    $col = 3; // columns are now 1 based
     $myString = $worksheet->getCell([$col, $row])->getValue();
     $start_wordle = $myString;
 
@@ -100,9 +98,12 @@ foreach ($objPHPExcelModules->getWorksheetIterator() as $worksheet) {
         'results'=>$results,
         'name'=>$worksheet_name
     );
+
     // only do the first worksheet
     //break;
 }
+
+push_all_round_data_database($db,$round_data);
 
 $message = "Success";
 $is_valid = 1;
