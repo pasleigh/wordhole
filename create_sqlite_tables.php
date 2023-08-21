@@ -25,7 +25,7 @@ $results = $db->query($query);
 $query = "CREATE TABLE IF NOT EXISTS 'w_results' (
                 'id' INTEGER PRIMARY KEY NOT NULL, 
                 'round_id' INTEGER NOT NULL, 
-                'parson_id' INTEGER NOT NULL, 
+                'person_id' INTEGER NOT NULL, 
                 'hole_num' INTEGER NOT NULL, 
                 'wordle_num' INTEGER NOT NULL, 
                 'score' INTEGER NOT NULL, 

@@ -19,6 +19,7 @@ $results[] = array(
 */
 function push_all_round_data_database($db,$round_data){
     $ret_value = true;
+    $all_rounds_final_scores = array();
     for($i = 0; $i < count($round_data); $i++){
         $this_round = $round_data[$i];
         $sheet_name = $this_round['name'];
@@ -36,6 +37,7 @@ function push_all_round_data_database($db,$round_data){
 
             //echo('Results<BR>');
             //var_dump($results);
+            $this_round_final_scores = array();
             for ($j = 0; $j < count($results); $j++) {
                 $result = $results[$j];
                 $first_name = $result['first_name'];
@@ -45,14 +47,24 @@ function push_all_round_data_database($db,$round_data){
                 $total = 0;
                 for ($k = 0; $k < count($scores); $k++) {
                     $score = $scores[$k];
-                    if ($score == null) {
+                    if ($score === null) {
                         break;
                     }
+                    $hole_num = $k+1;
+                    $wordle_num = $wordle_start_num + $k;
                     $total += $score - $par;
+                    $result_id = SubmitScore($db,$round_id,$person_id,$hole_num,$wordle_num, $score, $total);
                 }
                 // Do something with the total
+                $this_round_final_scores[] = array(
+                    'first_name'=>$first_name,
+                    'family_name'=>$family_name,
+                    'final_score'=>$total,
+                    ';ast_hole_num'=>$k
+                );
             }
         }
+        $all_rounds_final_scores[$round_num] = $this_round_final_scores;
     }
 
     return $ret_value;
@@ -96,4 +108,31 @@ function GetRoundID($db,$round_num,$wordle_start_num, $wordle_start_date, $par){
     }
 
     return $id;
+}
+
+function SubmitScore($db,$round_id,$person_id,$hole_num,$wordle_num, $score, $total){
+    $query = "SELECT * FROM w_results WHERE round_id='$round_id' AND person_id='$person_id' AND hole_num='$hole_num'";
+    $results = $db->query($query);
+
+    $score_rec = $results->fetchArray();
+    if($score_rec){
+        // return the id
+        $score_id = $score_rec['id'];
+        $query = "UPDATE w_results SET 
+                     round_id='$round_id', 
+                     person_id='$person_id', 
+                     hole_num='$hole_num', 
+                     wordle_num='$wordle_num', 
+                     score='$score', 
+                     total='$total' 
+                 WHERE id='$score_id'";
+        //$db->query($query);
+    }else{
+        $query = "INSERT INTO w_results (round_id, person_id, hole_num, wordle_num, score, total) 
+                    VALUES ('$round_id', '$person_id', '$hole_num', '$wordle_num', '$score', '$total')";
+        $db->query($query);
+        $score_id = $db->lastInsertRowId();
+    }
+
+    return $score_id;
 }
