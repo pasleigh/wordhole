@@ -42,31 +42,44 @@ while ($round = $results->fetchArray()) {
 
     $results = array();
 
-    $query = "SELECT * FROM w_results WHERE round_id=$round_id";
-    $round_results = $db->query($query);
+    $query = "SELECT * FROM w_people WHERE 1";
+    $people_results = $db->query($query);
 
-    while ($round_recs = $round_results->fetchArray()) {
-        $col = 1;
-        $first_name = $worksheet->getCell([$col, $row])->getValue();
-        if($first_name === null){break;}
-        if(trim($first_name)==""){break;}
-        $col++;
-        $family_name = $worksheet->getCell([$col, $row])->getValue();
-        $scores = array();
-        for ($i = 1; $i <= 18; $i++) {
-            $col = $num_start_col + ($i-1) * 3;
-            $myString = $worksheet->getCell([$col, $row])->getValue();
-            if($myString == ""){
-                $scores[] = null;
-            }else{
-                $scores[] = floatval($myString);
+
+    while ($people_rec = $people_results->fetchArray()) {
+        $people_id = $people_rec['id'];
+
+
+        $query = "SELECT COUNT(*) as count FROM w_results WHERE round_id=$round_id AND people_id=$people_id";
+        $round_results = $db->query($query);
+        $round_recs = $round_results->fetchArray();
+        $numScores = $round_recs['count'];
+
+        if($numScores > 0) {
+            $query = "SELECT * FROM w_results WHERE round_id=$round_id AND people_id=$people_id ORDER BY hole_num ASC";
+            $round_results = $db->query($query);
+            while ($round_recs = $round_results->fetchArray()) {
+                $first_name = $people_rec['first_name'];
+                $family_name = $people_rec['family_name'];
+
+                $scores = array();
+                for ($i = 1; $i <= $numScores; $i++) {
+                    $myString = $worksheet->getCell([$col, $row])->getValue();
+                    if ($myString == "") {
+                        $scores[] = null;
+                    } else {
+                        $scores[] = floatval($myString);
+                    }
+                }
+
+
+                $results[] = array(
+                    'first_name' => $first_name,
+                    'family_name' => $family_name,
+                    'scores' => $scores
+                );
             }
         }
-        $results[] = array(
-            'first_name'=>$first_name,
-            'family_name'=>$family_name,
-            'scores'=>$scores
-        );
     }
 
     $round_data[] = array(
