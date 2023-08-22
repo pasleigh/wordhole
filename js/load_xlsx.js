@@ -1,5 +1,86 @@
 var all_rounds_data;
 var the_chart;
+var table_def = {
+    data: null,
+    columns: [
+        {type: 'numeric', width: '25', title: 'ID'},
+        {type: 'text', width: '80', title: 'First name', readOnly:true},
+        {type: 'text', width: '80', title: 'Family name', readOnly:true},
+        {type: 'numeric', width: '49', title: 'Hole 1'},
+        {type: 'numeric', width: '49', title: 'Hole 2'},
+        {type: 'numeric', width: '49', title: 'Hole 3'},
+        {type: 'numeric', width: '49', title: 'Hole 4'},
+        {type: 'numeric', width: '49', title: 'Hole 5'},
+        {type: 'numeric', width: '49', title: 'Hole 6'},
+        {type: 'numeric', width: '49', title: 'Hole 7'},
+        {type: 'numeric', width: '49', title: 'Hole 8'},
+        {type: 'numeric', width: '49', title: 'Hole 9'},
+        {type: 'numeric', width: '49', title: 'Hole 10'},
+        {type: 'numeric', width: '49', title: 'Hole 11'},
+        {type: 'numeric', width: '49', title: 'Hole 12'},
+        {type: 'numeric', width: '49', title: 'Hole 13'},
+        {type: 'numeric', width: '49', title: 'Hole 14'},
+        {type: 'numeric', width: '49', title: 'Hole 15'},
+        {type: 'numeric', width: '49', title: 'Hole 16'},
+        {type: 'numeric', width: '49', title: 'Hole 17'},
+        {type: 'numeric', width: '49', title: 'Hole 18'},
+        {type: 'numeric', width: '49', title: 'Total'}
+    ],
+    nestedHeaders: [
+        [
+            {title: '', colspan: '1'},
+            {title: 'Who', colspan: '2'},
+            {title: '783', colspan: '1'},
+            {title: '884', colspan: '1'},
+            {title: '885', colspan: '1'},
+            {title: '886', colspan: '1'},
+            {title: '887', colspan: '1'},
+            {title: '888', colspan: '1'},
+            {title: '889', colspan: '1'},
+            {title: '890', colspan: '1'},
+            {title: '891', colspan: '1'},
+            {title: '892', colspan: '1'},
+            {title: '893', colspan: '1'},
+            {title: '894', colspan: '1'},
+            {title: '895', colspan: '1'},
+            {title: '896', colspan: '1'},
+            {title: '897', colspan: '1'},
+            {title: '898', colspan: '1'},
+            {title: '899', colspan: '1'},
+            {title: '900', colspan: '1'},
+            {title: '', colspan: '1'},
+        ],
+        [
+            {title: '', colspan: '1'},
+            {title: '', colspan: '2'},
+            {title: '21 Aug', colspan: '1'},
+            {title: '22 Aug', colspan: '1'},
+            {title: '23 Aug', colspan: '1'},
+            {title: '24 Aug', colspan: '1'},
+            {title: '25 Aug', colspan: '1'},
+            {title: '26 Aug', colspan: '1'},
+            {title: '27 Aug', colspan: '1'},
+            {title: '28 Aug', colspan: '1'},
+            {title: '29 Aug', colspan: '1'},
+            {title: '30 Aug', colspan: '1'},
+            {title: '31 Aug', colspan: '1'},
+            {title: '1 Sep', colspan: '1'},
+            {title: '2 Sep', colspan: '1'},
+            {title: '3 Sep', colspan: '1'},
+            {title: '4 Sep', colspan: '1'},
+            {title: '5 Sep', colspan: '1'},
+            {title: '6 Sep', colspan: '1'},
+            {title: '7 Sep', colspan: '1'},
+            {title: '', colspan: '1'},
+        ]
+    ],
+    //colAlignments: ['center', 'left', 'left', 'left'] ,
+    filters: false,
+    search: false,
+    pagination: 30,
+    contextMenu: false,
+    onchange: cell_changed
+}
 
 function load_wordle_data(chart_container_id){
     $.ajax({
@@ -7,16 +88,17 @@ function load_wordle_data(chart_container_id){
         //url: 'test_pwd.php',
         //url: 'externaldev?task=ajax',
         //url: 'index.php?option=com_dotcontent&view=external?task=ajax',
-        url: './load_xlsx.php',
+        //url: './load_xlsx.php',
+        url: './load_sqlite.php',
         contentType: false,
         processData: false,
         dataType: "json",
         success: function (mydata) {
             //
             //console.log(JSON.stringify(mydata));
-            if(mydata.is_valid == 1){
+            if (mydata.is_valid == 1) {
                 let html = ""
-                for(let i = 0; i < mydata.round_data.length; i++){
+                for (let i = 0; i < mydata.round_data.length; i++) {
                     html += "<option value='" + i + "'>" + mydata.round_data[i].name + "</option>";
                 }
                 $('#round_select').html(html);
@@ -24,10 +106,33 @@ function load_wordle_data(chart_container_id){
                 all_rounds_data = mydata.round_data;
 
                 //alert(mydata.message + "\n" + mydata.file_info);
-                let selected_round_data= all_rounds_data[0];
+                let selected_round_data = all_rounds_data[0];
                 let my_chart_container_id = "par_chart_container";
-                draw_par_chart(selected_round_data,my_chart_container_id,0);
+                draw_par_chart(selected_round_data, my_chart_container_id, 0);
                 write_winners_info(selected_round_data);
+
+                if (document.getElementById('jspreadsheet_wordle_data')) {
+                    let start_date = selected_round_data.start_date
+                    let start_date_split = start_date.split("-")
+                    let start_date_d = new Date(start_date_split[2], parseInt(start_date_split[1])-1, start_date_split[0], 0,0,0 )
+                    let date_str = moment(start_date_d).format('D MMM');
+                    //date.setDate(date.getDate() + days);
+                    let start_wordle = selected_round_data.start_wordle
+                    for(let i = 0; i < 18; i++){
+                        let wordle_count_header = table_def.nestedHeaders[0]
+                        wordle_count_header[2+i].title = start_wordle+i
+
+                        let wordle_date_header = table_def.nestedHeaders[1]
+                        date_str = moment(start_date_d).add(i,'days').format('D MMM')
+                        wordle_date_header[2+i].title = date_str
+
+                    }
+                    //alert("jspreadsheet_wordle_data exists")
+                    table_def.data = null
+                    $('#jspreadsheet_wordle_data').empty();
+                    summary_table = jspreadsheet(document.getElementById('jspreadsheet_wordle_data'), table_def);
+                }
+
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -41,8 +146,7 @@ function load_wordle_data(chart_container_id){
             console.log('errorThrown:');
             console.log(errorThrown);
         }
-    });
-
+    })
 }
 
 function draw_par_chart(score_data,container_id){
@@ -215,4 +319,21 @@ function write_winners_info(latest_round_data){
     }
     $('#scores').html(html);
 
+}
+
+
+var cell_changed = function(instance, cell, x, y, value) {
+    var cellName = jspreadsheet.getColumnNameFromId([x,y]);
+    //$('#result').html('New change on cell [' + x + ', ' + y + '] ' + cellName + ' to: ' + value + '');
+    var row_data = summary_table.getRowData(y);
+    var id = row_data[0]
+    var year = row_data[1]
+    var home_int = row_data[5]
+    var ethnic_dec = row_data[6]
+    var nationality_desc = row_data[7]
+
+    let alldata = summary_table.getData()
+    $('#result').html(JSON.stringify(alldata))
+    //$('#result').append('<BR> id: ' + id, ", home/Int: " + home_int + ', Ethnic desc: '+ethnic_dec+ ', Nationlity: '+nationality_desc);
+    //update_ethnicity_award_data(year,id,home_int,ethnic_dec,nationality_desc);
 }

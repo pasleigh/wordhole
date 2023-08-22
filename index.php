@@ -1,5 +1,38 @@
 <?php
 $x = 0;
+if (array_key_exists('e', $_GET) == false) {
+    $_GET['e'] = null;
+}
+$edit = $_GET['e'];
+
+$show_edit_block = false;
+if($edit === "edit"){
+    $show_edit_block = true;
+}
+
+$edit_block = "";
+if($show_edit_block){
+    $edit_block .= <<<HTML
+    <div class='card mb-3'>
+        <div class='card-header'>
+            <h5>Enter wordle scores data</h5>
+        </div>
+        <div id='edit_body' class='card-body m-2'>
+            This is the body of the edit card
+
+            <div style="font-size: small">
+            <div id='jspreadsheet_wordle_data'></div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <button type="button" class="btn btn-primary" id="submit_cwt_editor_data">Submit updates</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    HTML;
+}
+
 ?>
 
 <!doctype html>
@@ -28,6 +61,8 @@ $x = 0;
 </div>
 <div id="par_chart_container" style="height: 600px;"></div>
 
+<div id="edit_block"><?php echo($edit_block); ?></div>
+
 <div id="scores"></div>
 </div>
 
@@ -42,6 +77,12 @@ $x = 0;
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="./frameworks/jspreadsheets/jspreadsheet.js"></script>
+<link rel="stylesheet" href="./frameworks/jspreadsheets/jspreadsheet.css" type="text/css" />
+<script src="./frameworks/jsuites/jsuites.js"></script>
+<link rel="stylesheet" href="./frameworks/jsuites/jsuites.css" type="text/css" />
+
 <script>
     $(document).ready(function () {
         load_wordle_data('par_chart_container');

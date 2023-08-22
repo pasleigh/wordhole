@@ -3,30 +3,11 @@
 (@include_once("./create_sqlite_tables.php")) OR die("Cannot read create_sqlite_tables.php file<BR>");
 (@include_once("./database_functions.php")) OR die("Cannot read database_functions.php file<BR>");
 
-function getDateStrFromCell($worksheet,$row,$col,$date_format = 'd-m-Y'){
-    $cellDataType = $worksheet->getCell([$col, $row])->getDataType();
-    if ($cellDataType == 'n') {
-        // Date format
-        $mydate = $worksheet->getCell([$col, $row])->getValue();
-        $mydate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($mydate);
-        $mydate_str = $mydate->format($date_format); // 02-09-1963
-        //$intro_week_s2 = $intro_week_sd->format('j/M/Y'); // 2/sep/163
-    } elseif ($cellDataType == 'f'){
-        // Formula (hopefully a date)
-        $mydate = $worksheet->getCell([$col, $row])->getOldCalculatedValue();
-        $mydate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($mydate);
-        $mydate_str = $mydate->format($date_format); // 02-09-1963
-    }else{
-        // let just take the value
-        $mydate_str = $worksheet->getCell([$col, $row])->getValue();
-    }
-    return $mydate_str;
-}
 
 $query = "SELECT * FROM w_index WHERE 1";
-$results = $db->query($query);
+$index_results = $db->query($query);
 
-while ($round = $results->fetchArray()) {
+while ($round = $index_results->fetchArray()) {
     $round_id = $round['id'];
     $round_name = "Round " . $round['round_num'];
 
@@ -47,38 +28,35 @@ while ($round = $results->fetchArray()) {
 
 
     while ($people_rec = $people_results->fetchArray()) {
-        $people_id = $people_rec['id'];
+        $person_id = $people_rec['id'];
+        $first_name = $people_rec['first_name'];
+        $family_name = $people_rec['family_name'];
 
-
-        $query = "SELECT COUNT(*) as count FROM w_results WHERE round_id=$round_id AND people_id=$people_id";
+        $query = "SELECT COUNT(*) as count FROM w_results WHERE round_id=$round_id AND person_id=$person_id";
         $round_results = $db->query($query);
         $round_recs = $round_results->fetchArray();
         $numScores = $round_recs['count'];
 
         if($numScores > 0) {
-            $query = "SELECT * FROM w_results WHERE round_id=$round_id AND people_id=$people_id ORDER BY hole_num ASC";
-            $round_results = $db->query($query);
-            while ($round_recs = $round_results->fetchArray()) {
-                $first_name = $people_rec['first_name'];
-                $family_name = $people_rec['family_name'];
+            for ($i = 1; $i <= $numScores; $i++) {
+                $query = "SELECT * FROM w_results WHERE round_id=$round_id AND person_id=$person_id AND hole_num=$i";
+                $round_results = $db->query($query);
+                $round_rec = $round_results->fetchArray();
 
-                $scores = array();
-                for ($i = 1; $i <= $numScores; $i++) {
-                    $myString = $worksheet->getCell([$col, $row])->getValue();
-                    if ($myString == "") {
-                        $scores[] = null;
-                    } else {
-                        $scores[] = floatval($myString);
-                    }
-                }
-
-
-                $results[] = array(
-                    'first_name' => $first_name,
-                    'family_name' => $family_name,
-                    'scores' => $scores
-                );
+                $hole_num = $round_rec['hole_num'];
+                $hole_num = $hole_num-1;
+                $score = $round_rec['score'];
+                $scores[$hole_num] = $score;
             }
+            // fill the 18 holes with null
+            for ($i = $numScores; $i < 18; $i++) {
+                $scores[$i] = null;
+            }
+            $results[] = array(
+                'first_name' => $first_name,
+                'family_name' => $family_name,
+                'scores' => $scores
+            );
         }
     }
 
@@ -91,11 +69,7 @@ while ($round = $results->fetchArray()) {
         'name'=>$round_name
     );
 
-    // only do the first worksheet
-    //break;
 }
-
-push_all_round_data_database($db,$round_data);
 
 $message = "Success";
 $is_valid = 1;
@@ -104,7 +78,7 @@ $is_valid = 1;
 $return_data = array(
     'round_data'=>$round_data,
     'message'=>$message,
-    'file_info'=>$file_info,
+    'file_info'=>null,
     'is_valid'=>$is_valid
 );
 
