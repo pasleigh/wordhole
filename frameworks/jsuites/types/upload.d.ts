@@ -12,6 +12,7 @@ interface File {
     /** Alias for the file object */
     content: object;
 }
+
 interface Options {
     /** Upload type. Default: image */
     type?: 'image' | string,

@@ -2,7 +2,7 @@ interface Options {
     // Render type: [ default | year-month-picker ]. Default: default
     type?: 'default' | 'year-month-picker';
     // Range restriction [dateStart, dateEnd]
-    validRange?: [string|null, string|null];
+    validRange?: [string | null, string | null];
     // Starting weekday - 0 for sunday, 6 for saturday
     startingDay?: number,
     // Date format. Default 'DD/MM/YYYY'

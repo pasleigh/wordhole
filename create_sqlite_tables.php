@@ -1,5 +1,5 @@
 <?php
-(@include_once("./config.php")) OR die("Cannot find this file to include: config.php<BR>");
+(@include_once("./config.php")) or die("Cannot find this file to include: config.php<BR>");
 
 $db = new SQLite3($db_sqlite, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE) or die("cannot open the database");
 

@@ -14,7 +14,7 @@ interface Return {
     // Character position
     position: number,
     // Date raw values
-    date: [number,number,number,number,number,number],
+    date: [number, number, number, number, number, number],
     // Raw number for the numeric values
     number: number,
 }

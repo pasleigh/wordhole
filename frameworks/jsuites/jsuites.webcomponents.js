@@ -1,4 +1,3 @@
-
 /**
  * (c) jSuites Javascript Web Components
  *
@@ -38,7 +37,7 @@ class JsuitesCalendar extends HTMLElement {
             placeholder: placeholder ? placeholder : null,
             format: format ? format : 'YYYY-MM-DD',
             time: time ? true : false,
-            onchange: function(el, val) {
+            onchange: function (el, val) {
                 // Change value of the element
                 el.setAttribute('value', val);
                 o.setAttribute('value', val);
@@ -52,7 +51,7 @@ class JsuitesCalendar extends HTMLElement {
                 var e = new CustomEvent("onchange");
                 el.parentNode.dispatchEvent(e);
             },
-            onclose: function(el) {
+            onclose: function (el) {
                 // Basic HTML event
                 var s = o.getAttribute('onclose');
                 if (s) {
@@ -66,7 +65,7 @@ class JsuitesCalendar extends HTMLElement {
     }
 
     connectedCallback() {
-        if (! this.input) {
+        if (!this.input) {
             this.init(this);
         }
     }
@@ -101,8 +100,8 @@ class JsuitesColor extends HTMLElement {
         // Component
         jSuites.color(this.input, {
             value: value ? value : null,
-            placeholder: placeholder ? placeholder : null, 
-            onchange: function(el, color) {
+            placeholder: placeholder ? placeholder : null,
+            onchange: function (el, color) {
                 // Change value of the element
                 o.setAttribute('value', color);
                 o.value = color;
@@ -115,7 +114,7 @@ class JsuitesColor extends HTMLElement {
                 var e = new CustomEvent("onchange");
                 el.parentNode.dispatchEvent(e);
             },
-            onclose: function(el) {
+            onclose: function (el) {
                 // Basic HTML event
                 var s = o.getAttribute('onclose');
                 if (s) {
@@ -129,7 +128,7 @@ class JsuitesColor extends HTMLElement {
     }
 
     connectedCallback() {
-        if (! this.input) {
+        if (!this.input) {
             this.init(this);
         }
     }
@@ -152,14 +151,14 @@ class JsuitesContextmenu extends HTMLElement {
     init(o) {
         this.el = jSuites.contextmenu(o, {
             items: null,
-            onclick: function(a) {
+            onclick: function (a) {
                 a.close();
             }
         });
     }
 
     connectedCallback() {
-        if (! this.el) {
+        if (!this.el) {
             this.init(this);
         }
     }
@@ -191,7 +190,7 @@ class JsuitesEditor extends HTMLElement {
         }
 
         // Events
-        options.onload = function(el, obj) {
+        options.onload = function (el, obj) {
             // Basic HTML event
             var s = o.getAttribute('onload');
             if (s) {
@@ -202,7 +201,7 @@ class JsuitesEditor extends HTMLElement {
             el.dispatchEvent(e);
         }
 
-        options.onclick = function(el, obj) {
+        options.onclick = function (el, obj) {
             // Basic HTML event
             var s = o.getAttribute('onclick');
             if (s) {
@@ -213,7 +212,7 @@ class JsuitesEditor extends HTMLElement {
             el.dispatchEvent(e);
         }
 
-        options.onfocus = function(el, obj) {
+        options.onfocus = function (el, obj) {
             // Basic HTML event
             var s = o.getAttribute('onfocus');
             if (s) {
@@ -224,7 +223,7 @@ class JsuitesEditor extends HTMLElement {
             el.dispatchEvent(e);
         }
 
-        options.onblur = function(el, obj) {
+        options.onblur = function (el, obj) {
             // Basic HTML event
             var s = o.getAttribute('onblur');
             if (s) {
@@ -235,7 +234,7 @@ class JsuitesEditor extends HTMLElement {
             el.dispatchEvent(e);
         }
 
-        options.onclose = function(el, obj) {
+        options.onclose = function (el, obj) {
             // Basic HTML event
             var s = o.getAttribute('onclose');
             if (s) {
@@ -246,13 +245,13 @@ class JsuitesEditor extends HTMLElement {
             el.dispatchEvent(e);
         }
 
-        setTimeout(function() {
+        setTimeout(function () {
             jSuites.editor(o, options);
         }, 0);
     }
 
     connectedCallback() {
-        if (! this.el) {
+        if (!this.el) {
             this.init(this);
         }
     }
@@ -296,7 +295,7 @@ class JsuitesModal extends HTMLElement {
         }
 
         // Events
-        options.onopen = function(el, obj) {
+        options.onopen = function (el, obj) {
             // Basic HTML event
             var s = o.getAttribute('onopen');
             if (s) {
@@ -307,7 +306,7 @@ class JsuitesModal extends HTMLElement {
             el.dispatchEvent(e);
         }
 
-        options.onclose = function(el, obj) {
+        options.onclose = function (el, obj) {
             // Basic HTML event
             var s = o.getAttribute('onclose');
             if (s) {
@@ -318,13 +317,13 @@ class JsuitesModal extends HTMLElement {
             el.dispatchEvent(e);
         }
 
-        setTimeout(function() {
+        setTimeout(function () {
             jSuites.modal(o, options);
         }, 0);
     }
 
     connectedCallback() {
-        if (! this.el) {
+        if (!this.el) {
             this.init(this);
         }
     }
@@ -352,14 +351,14 @@ class JsuitesRating extends HTMLElement {
         if (tooltip) {
             tooltip = tooltip.split(',');
         } else {
-            tooltip = [ 'Very bad', 'Bad', 'Average', 'Good', 'Very good' ];
+            tooltip = ['Very bad', 'Bad', 'Average', 'Good', 'Very good'];
         }
 
         jSuites.rating(o, {
             value: value,
             number: number,
             tooltip: tooltip,
-            onchange: function(el, v) {
+            onchange: function (el, v) {
                 // Change value of the element
                 o.setAttribute('value', v);
                 o.value = v;
@@ -379,7 +378,7 @@ class JsuitesRating extends HTMLElement {
     }
 
     connectedCallback() {
-        if (! this.initiated) {
+        if (!this.initiated) {
             this.init(this);
         }
     }
@@ -411,7 +410,7 @@ class JsuitesTags extends HTMLElement {
             limit: limit,
             search: search,
             placeholder: placeholder,
-            onbeforechange: function(el, obj, v) {
+            onbeforechange: function (el, obj, v) {
                 // Basic HTML event
                 var s = o.getAttribute('onbeforechange');
                 if (s) {
@@ -425,7 +424,7 @@ class JsuitesTags extends HTMLElement {
                     el.dispatchEvent(e);
                 }
             },
-            onchange: function(el, obj, v) {
+            onchange: function (el, obj, v) {
                 var newValue = obj.getValue();
                 // Change value of the element
                 o.setAttribute('value', newValue);
@@ -440,7 +439,7 @@ class JsuitesTags extends HTMLElement {
                     el.dispatchEvent(e);
                 }
             },
-            onfocus: function(el, obj, v) {
+            onfocus: function (el, obj, v) {
                 // Basic HTML event
                 var s = o.getAttribute('onfocus');
                 if (s) {
@@ -451,7 +450,7 @@ class JsuitesTags extends HTMLElement {
                     el.dispatchEvent(e);
                 }
             },
-            onblur: function(el, obj, v) {
+            onblur: function (el, obj, v) {
                 var newValue = obj.getValue();
                 // Change value of the element
                 o.setAttribute('value', newValue);
@@ -466,7 +465,7 @@ class JsuitesTags extends HTMLElement {
                     el.dispatchEvent(e);
                 }
             },
-            onload: function(el, obj) {
+            onload: function (el, obj) {
                 // Basic HTML event
                 var s = o.getAttribute('onload');
                 if (s) {
@@ -484,7 +483,7 @@ class JsuitesTags extends HTMLElement {
     }
 
     connectedCallback() {
-        if (! this.initiated) {
+        if (!this.initiated) {
             this.init(this);
         }
     }

@@ -3,7 +3,7 @@
  * https://jsuites.net
  */
 
-import { JSuites } from "./types";
+import {JSuites} from "./types";
 
 declare const jSuites: JSuites;
 

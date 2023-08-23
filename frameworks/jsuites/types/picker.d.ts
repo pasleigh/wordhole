@@ -10,7 +10,7 @@ interface Options {
     /** Event when value is changed */
     onclose?: (el: HTMLElement, instance: Picker) => void;
     /** Event when value is changed */
-    onload?:  (el: HTMLElement, instance: Picker) => void;
+    onload?: (el: HTMLElement, instance: Picker) => void;
     /** Default width */
     width?: number;
     /** Show the header. Default: true */

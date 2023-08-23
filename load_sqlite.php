@@ -1,7 +1,7 @@
 <?php
-(@include_once("./config.php")) OR die("Cannot read config.php file<BR>");
-(@include_once("./create_sqlite_tables.php")) OR die("Cannot read create_sqlite_tables.php file<BR>");
-(@include_once("./database_functions.php")) OR die("Cannot read database_functions.php file<BR>");
+(@include_once("./config.php")) or die("Cannot read config.php file<BR>");
+(@include_once("./create_sqlite_tables.php")) or die("Cannot read create_sqlite_tables.php file<BR>");
+(@include_once("./database_functions.php")) or die("Cannot read database_functions.php file<BR>");
 
 
 $query = "SELECT * FROM w_index WHERE 1";
@@ -37,14 +37,14 @@ while ($round = $index_results->fetchArray()) {
         $round_recs = $round_results->fetchArray();
         $numScores = $round_recs['count'];
 
-        if($numScores > 0) {
+        if ($numScores > 0) {
             for ($i = 1; $i <= $numScores; $i++) {
                 $query = "SELECT * FROM w_results WHERE round_id=$round_id AND person_id=$person_id AND hole_num=$i";
                 $round_results = $db->query($query);
                 $round_rec = $round_results->fetchArray();
 
                 $hole_num = $round_rec['hole_num'];
-                $hole_num = $hole_num-1;
+                $hole_num = $hole_num - 1;
                 $score = $round_rec['score'];
                 $scores[$hole_num] = $score;
             }
@@ -61,12 +61,12 @@ while ($round = $index_results->fetchArray()) {
     }
 
     $round_data[] = array(
-        'start_date'=>$start_date,
-        'start_date_d-m-Y'=>$start_date2,
-        'start_wordle'=>$start_wordle,
-        'par'=>$par,
-        'results'=>$results,
-        'name'=>$round_name
+        'start_date' => $start_date,
+        'start_date_d-m-Y' => $start_date2,
+        'start_wordle' => $start_wordle,
+        'par' => $par,
+        'results' => $results,
+        'name' => $round_name
     );
 
 }
@@ -76,10 +76,10 @@ $is_valid = 1;
 
 
 $return_data = array(
-    'round_data'=>$round_data,
-    'message'=>$message,
-    'file_info'=>null,
-    'is_valid'=>$is_valid
+    'round_data' => $round_data,
+    'message' => $message,
+    'file_info' => null,
+    'is_valid' => $is_valid
 );
 
 echo json_encode($return_data);

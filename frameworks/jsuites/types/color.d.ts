@@ -28,21 +28,21 @@ interface Options {
 /** Toast Plugin */
 export type Color = (el: HTMLElement, options: Options) => {
     /** Close the color picker */
-    close: () =>  void;
+    close: () => void;
     /** Get the current color in hex */
-    getValue: () =>  void;
+    getValue: () => void;
     /** Open the color picker */
-    open: () =>  void;
+    open: () => void;
     /** Initial settings */
     options: Options;
     /** Select an available color in the picker by its hex code */
-    select: (color: string) =>  void;
+    select: (color: string) => void;
     /** Change the settings */
-    setOptions: (options: Options) =>  void;
+    setOptions: (options: Options) => void;
     /** Set the internal color */
-    setValue: (newColor: string) =>  void;
+    setValue: (newColor: string) => void;
     /** Internal converter to hex */
-    toHex: () =>  void;
+    toHex: () => void;
     /** Internal type */
     type: 'color';
     /** Internal container for all colors */

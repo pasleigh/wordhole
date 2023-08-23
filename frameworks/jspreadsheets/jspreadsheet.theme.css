@@ -156,27 +156,35 @@
 .jexcel .highlight-bottom {
     border-bottom: 1px solid var(--jexcel_border_color_highlighted);
 }
+
 .jexcel .highlight-right {
     border-right: 1px solid var(--jexcel_border_color_highlighted);
 }
+
 .jexcel .highlight-left {
     border-left: 1px solid var(--jexcel_border_color_highlighted);
 }
+
 .jexcel .highlight-top {
     border-top: 1px solid var(--jexcel_border_color_highlighted);
 }
+
 .jexcel .copying-top {
     border-top-color: var(--jexcel_border_color_highlighted);
 }
+
 .jexcel .copying-right {
     border-right-color: var(--jexcel_border_color_highlighted);
 }
+
 .jexcel .copying-left {
     border-left-color: var(--jexcel_border_color_highlighted);
 }
+
 .jexcel .copying-bottom {
     border-bottom-color: var(--jexcel_border_color_highlighted);
 }
+
 .jexcel_border_main, .jexcel .highlight-top.highlight-left, .jexcel .highlight-top, .jexcel .highlight-left {
     -webkit-box-shadow: unset;
     box-shadow: unset;

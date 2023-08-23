@@ -82,7 +82,7 @@ interface ItemContainer {
 /** Toast Plugin */
 export type Dropdown = (el: HTMLElement, options: Options) => {
     /** Add a new item to the dropdown */
-    add: (title: string, id: string|number) => Item;
+    add: (title: string, id: string | number) => Item;
     /** Append new data to the dropdown */
     appendData: (data: Item[]) => void
     /** Close the dropdown picker */
@@ -146,7 +146,7 @@ export type Dropdown = (el: HTMLElement, options: Options) => {
     /** Set new data for the dropdown */
     setData: (items: Item[]) => void;
     /** Set the id or value for one item */
-    setId: (item: number|Item, newId: number) => void;
+    setId: (item: number | Item, newId: number) => void;
     /** Change the dropdown options */
     setOptions: (newOptions: Options, reset?: boolean) => void;
     /** Change the dropdown data from a URL */

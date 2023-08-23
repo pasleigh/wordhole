@@ -11,6 +11,4 @@ interface Number {
     criteria: 'between' | 'not between' | '<' | '<=' | '>' | '>=' | '=' | '!='
 }
 
-export type Validations = (value: string | number, options) => {
-
-}
+export type Validations = (value: string | number, options) => {}

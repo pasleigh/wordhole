@@ -4,8 +4,8 @@ var table_def = {
     data: null,
     columns: [
         {type: 'numeric', width: '25', title: 'ID'},
-        {type: 'text', width: '80', title: 'First name', readOnly:true},
-        {type: 'text', width: '80', title: 'Family name', readOnly:true},
+        {type: 'text', width: '80', title: 'First name', readOnly: true},
+        {type: 'text', width: '80', title: 'Family name', readOnly: true},
         {type: 'numeric', width: '49', title: 'Hole 1'},
         {type: 'numeric', width: '49', title: 'Hole 2'},
         {type: 'numeric', width: '49', title: 'Hole 3'},
@@ -82,7 +82,7 @@ var table_def = {
     onchange: cell_changed
 }
 
-function load_wordle_data(chart_container_id){
+function load_wordle_data(chart_container_id) {
     $.ajax({
         type: 'post',
         //url: 'test_pwd.php',
@@ -114,24 +114,24 @@ function load_wordle_data(chart_container_id){
                 if (document.getElementById('jspreadsheet_wordle_data')) {
                     let start_date = selected_round_data.start_date
                     let start_date_split = start_date.split("-")
-                    let start_date_d = new Date(start_date_split[2], parseInt(start_date_split[1])-1, start_date_split[0], 0,0,0 )
+                    let start_date_d = new Date(start_date_split[2], parseInt(start_date_split[1]) - 1, start_date_split[0], 0, 0, 0)
                     let date_str = moment(start_date_d).format('D MMM');
                     //date.setDate(date.getDate() + days);
                     let start_wordle = selected_round_data.start_wordle
-                    for(let i = 0; i < 18; i++){
+                    for (let i = 0; i < 18; i++) {
                         let wordle_count_header = table_def.nestedHeaders[0]
-                        wordle_count_header[2+i].title = start_wordle+i
+                        wordle_count_header[2 + i].title = start_wordle + i
 
                         let wordle_date_header = table_def.nestedHeaders[1]
-                        date_str = moment(start_date_d).add(i,'days').format('D MMM')
-                        wordle_date_header[2+i].title = date_str
+                        date_str = moment(start_date_d).add(i, 'days').format('D MMM')
+                        wordle_date_header[2 + i].title = date_str
 
                     }
                     let data = [
-                        ['1','Andy','Sleigh', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
-                        ['2','Alan','Bentley', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
-                        ['3','Mark','Wilson', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
-                        ['4','Sue','Marchant', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
+                        ['1', 'Andy', 'Sleigh', '3', '4', '5', '3', '5', '3', null, null, null, null, null, null, null, null, null, null, null, null, 0],
+                        ['2', 'Alan', 'Bentley', '3', '4', '5', '3', '5', '3', null, null, null, null, null, null, null, null, null, null, null, null, 0],
+                        ['3', 'Mark', 'Wilson', '3', '4', '5', '3', '5', '3', null, null, null, null, null, null, null, null, null, null, null, null, 0],
+                        ['4', 'Sue', 'Marchant', '3', '4', '5', '3', '5', '3', null, null, null, null, null, null, null, null, null, null, null, null, 0],
                     ];
                     //alert("jspreadsheet_wordle_data exists")
                     updateTable(selected_round_data)
@@ -157,7 +157,7 @@ function load_wordle_data(chart_container_id){
     })
 }
 
-function draw_par_chart(score_data,container_id){
+function draw_par_chart(score_data, container_id) {
     let myChart = myline_chart;
 
     let par = parseInt(score_data.par);
@@ -168,35 +168,35 @@ function draw_par_chart(score_data,container_id){
 
     myChart.series = [];
 
-    for(let i = 0 ; i < score_data.results.length; i++) {
+    for (let i = 0; i < score_data.results.length; i++) {
         let name = score_data.results[i].first_name + " " + score_data.results[i].family_name;
         let score_array = Array();
         let running_total = 0;
-        for(let j = 0; j < score_data.results[i].scores.length; j++) {
-            let x = start_wordle_num + j ;
+        for (let j = 0; j < score_data.results[i].scores.length; j++) {
+            let x = start_wordle_num + j;
             let y;
             let v;
             let comment = "";
-            if(score_data.results[i].scores[j] ){
+            if (score_data.results[i].scores[j]) {
                 v = Math.round(score_data.results[i].scores[j]);
-                y = v-par;
+                y = v - par;
                 running_total += y;
-                if(score_data.results[i].scores[j]>7){
+                if (score_data.results[i].scores[j] > 7) {
                     comment = "<BR>Did not submit 🙁";// U+2641
                 }
-                if(v == 7 && score_data.results[i].scores[j]<7){
+                if (v == 7 && score_data.results[i].scores[j] < 7) {
                     // A real 7 score
                     comment = "😵";//U+1F974️";
                 }
-                if(v < 3){
+                if (v < 3) {
                     comment = "🤩";//U+1F929"; // Big smile
                 }
-            }else{
+            } else {
                 y = null;
                 running_total = null;
                 v = null;
             }
-            score_array.push({x:x,y:running_total,v:v, h:j+1, c:comment});
+            score_array.push({x: x, y: running_total, v: v, h: j + 1, c: comment});
         }
         myChart.series.push(
             {
@@ -216,33 +216,36 @@ function draw_par_chart(score_data,container_id){
         }
     }
     */
-    $('#'+container_id).show();
-    $('#'+container_id).highcharts(myChart);
+    $('#' + container_id).show();
+    $('#' + container_id).highcharts(myChart);
 
 }
-function find_winners(score_data){
+
+function find_winners(score_data) {
     // find the lowest score for each hole
     // and record the people wi that score
     let min_scorers = Array();
 
     let num_holes = score_data.results[0].scores.length;
-    for(let i = 0; i < num_holes ; i++){
+    for (let i = 0; i < num_holes; i++) {
 
         // loop through people to find lowest score for this hole
         let min_score = 10;
-        for(let j = 0 ; j < score_data.results.length ;j++){
+        for (let j = 0; j < score_data.results.length; j++) {
             let score = score_data.results[j].scores[i];
-            if(score === null){score = 7;}
-            if(score < min_score){
+            if (score === null) {
+                score = 7;
+            }
+            if (score < min_score) {
                 min_score = score;
             }
         }
 
         // loop through people to find the list of people with this score
         let people = Array();
-        for(let j = 0 ; j < score_data.results.length ;j++){
+        for (let j = 0; j < score_data.results.length; j++) {
             let score = score_data.results[j].scores[i];
-            if(score === min_score){
+            if (score === min_score) {
                 // add this name to the array
                 let first_name = score_data.results[j].first_name;
                 let family_name = score_data.results[j].family_name;
@@ -254,16 +257,16 @@ function find_winners(score_data){
 
     // loop through the people to find how many won a hole
     let winner_stats = Array();
-    for(let j = 0 ; j < score_data.results.length ;j++){
+    for (let j = 0; j < score_data.results.length; j++) {
         let first_name = score_data.results[j].first_name;
         let family_name = score_data.results[j].family_name;
 
         // loop through holes for this person
         let win_count = 0;
-        for(let i = 0; i < num_holes ; i++) {
+        for (let i = 0; i < num_holes; i++) {
             let min_for_hole = min_scorers[i].score;
             let person_score_for_hole = score_data.results[j].scores[i];
-            if(min_for_hole == person_score_for_hole){
+            if (min_for_hole == person_score_for_hole) {
                 win_count++;
             }
         }
@@ -272,33 +275,34 @@ function find_winners(score_data){
 
     return {winners: min_scorers, winner_stats: winner_stats};
 }
-function write_winners_info(latest_round_data){
+
+function write_winners_info(latest_round_data) {
     let winners_data = find_winners(latest_round_data);
     let winners = winners_data.winners;
     let winners_count = winners_data.winner_stats;
     //console.log(winners);
     let html = "";
 
-    for(i = 0; i < winners.length; i++){
-        let html_row ="";
+    for (i = 0; i < winners.length; i++) {
+        let html_row = "";
         html_row += "<div class='row'>";
-        html_row += `<strong>Hole: ${i+1}, (${parseInt(latest_round_data.start_wordle)+i})`;
+        html_row += `<strong>Hole: ${i + 1}, (${parseInt(latest_round_data.start_wordle) + i})`;
         html_row += ` best score: ${winners[i].score}.</strong>`;
         //html += "</div>";
         //html += "<div class='row'>";
         //html += "<div class='col-2'></div>";
         //html += "<div class='col-2'>";
         let phrase = "";
-        if(winners[i].names.length == 1){
+        if (winners[i].names.length == 1) {
             phrase = "person";
-        }else{
+        } else {
             phrase = "people";
         }
         html_row += ` ${winners[i].names.length} ${phrase} got this score`;
         //html += "</div>";
         html_row += "</div>";
         html_row += "<div class='row mb-3'>";
-        for(j = 0; j < winners[i].names.length; j++){
+        for (j = 0; j < winners[i].names.length; j++) {
             //html += "<div class='row'>";
             //html += "<div class='col-2'></div>";
             //html += "<div class='col-2'>";
@@ -308,14 +312,14 @@ function write_winners_info(latest_round_data){
             //html += "</div>";
         }
         html_row += "</div>";
-        if(winners[i].names.length>0){
+        if (winners[i].names.length > 0) {
             html += html_row;
         }
     }
     html += "<div class='row mt-5'>";
     html += "<div class='col-6'><h5>How many holes did you get the best score?</h5></div>";
     html += "</div>";
-    for(j = 0; j < winners_count.length; j++){
+    for (j = 0; j < winners_count.length; j++) {
         html += "<div class='row'>";
         html += "<div class='col-2'></div>";
         html += "<div class='col-4'>";
@@ -330,8 +334,8 @@ function write_winners_info(latest_round_data){
 }
 
 
-var cell_changed = function(instance, cell, x, y, value) {
-    var cellName = jspreadsheet.getColumnNameFromId([x,y]);
+var cell_changed = function (instance, cell, x, y, value) {
+    var cellName = jspreadsheet.getColumnNameFromId([x, y]);
     //$('#result').html('New change on cell [' + x + ', ' + y + '] ' + cellName + ' to: ' + value + '');
     var row_data = summary_table.getRowData(y);
     var id = row_data[0]
@@ -346,13 +350,13 @@ var cell_changed = function(instance, cell, x, y, value) {
     //update_ethnicity_award_data(year,id,home_int,ethnic_dec,nationality_desc);
 }
 
-function updateTable(this_round_data){
+function updateTable(this_round_data) {
     table_def.data = getRoundDataForTable(this_round_data)
     $('#jspreadsheet_wordle_data').empty();
     summary_table = jspreadsheet(document.getElementById('jspreadsheet_wordle_data'), table_def);
 }
 
-function getRoundDataForTable(this_round_data){
+function getRoundDataForTable(this_round_data) {
     let data = Array()
 
     /*
@@ -365,17 +369,17 @@ function getRoundDataForTable(this_round_data){
     */
     let par = this_round_data.par;
     let results = this_round_data.results
-    for(let i = 0; i < results.length; i++){
+    for (let i = 0; i < results.length; i++) {
         let this_person = Array()
-        this_person.push(i+1)
+        this_person.push(i + 1)
         this_person.push(results[i].first_name)
         this_person.push(results[i].family_name)
         let total = 0
-        for(j=0;j< results[i].scores.length; j++ ){
+        for (j = 0; j < results[i].scores.length; j++) {
             let score = results[i].scores[j]
             this_person.push(score)
-            if(score !== null){
-                total += (score-par)
+            if (score !== null) {
+                total += (score - par)
             }
         }
         this_person.push(Math.round(total))

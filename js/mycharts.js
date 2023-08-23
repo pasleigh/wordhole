@@ -63,11 +63,11 @@ var myline_chart = {
     },
 
     tooltip: {
-        formatter: function() {
+        formatter: function () {
             //alert(this);
-            return  "<B>Wordle " + this.x + "</B><BR>" + '<span style="color:' + this.series.color
+            return "<B>Wordle " + this.x + "</B><BR>" + '<span style="color:' + this.series.color
                 + '">● </span><B>' + this.series.name + '</B> <BR>Round total: ' + this.y
-                + '<BR>This hole ['+ this.point.h+']: ' + this.point.v+' '+this.point.c ;
+                + '<BR>This hole [' + this.point.h + ']: ' + this.point.v + ' ' + this.point.c;
         }
     },
     exporting: {
