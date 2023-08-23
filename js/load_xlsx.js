@@ -127,10 +127,18 @@ function load_wordle_data(chart_container_id){
                         wordle_date_header[2+i].title = date_str
 
                     }
+                    let data = [
+                        ['1','Andy','Sleigh', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
+                        ['2','Alan','Bentley', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
+                        ['3','Mark','Wilson', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
+                        ['4','Sue','Marchant', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
+                    ];
                     //alert("jspreadsheet_wordle_data exists")
-                    table_def.data = null
-                    $('#jspreadsheet_wordle_data').empty();
-                    summary_table = jspreadsheet(document.getElementById('jspreadsheet_wordle_data'), table_def);
+                    updateTable(selected_round_data)
+                    //data = getRoundDataForTable(selected_round_data)
+                    //table_def.data = data
+                    //$('#jspreadsheet_wordle_data').empty();
+                    //summary_table = jspreadsheet(document.getElementById('jspreadsheet_wordle_data'), table_def);
                 }
 
             }
@@ -336,4 +344,42 @@ var cell_changed = function(instance, cell, x, y, value) {
     $('#result').html(JSON.stringify(alldata))
     //$('#result').append('<BR> id: ' + id, ", home/Int: " + home_int + ', Ethnic desc: '+ethnic_dec+ ', Nationlity: '+nationality_desc);
     //update_ethnicity_award_data(year,id,home_int,ethnic_dec,nationality_desc);
+}
+
+function updateTable(this_round_data){
+    table_def.data = getRoundDataForTable(this_round_data)
+    $('#jspreadsheet_wordle_data').empty();
+    summary_table = jspreadsheet(document.getElementById('jspreadsheet_wordle_data'), table_def);
+}
+
+function getRoundDataForTable(this_round_data){
+    let data = Array()
+
+    /*
+        let data = [
+            ['1','Andy','Sleigh', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
+            ['2','Alan','Bentley', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
+            ['3','Mark','Wilson', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
+            ['4','Sue','Marchant', '3', '4', '5', '3', '5', '3',null,null,null,null,null,null,null,null,null,null,null,null,0],
+        ];
+    */
+    let par = this_round_data.par;
+    let results = this_round_data.results
+    for(let i = 0; i < results.length; i++){
+        let this_person = Array()
+        this_person.push(i+1)
+        this_person.push(results[i].first_name)
+        this_person.push(results[i].family_name)
+        let total = 0
+        for(j=0;j< results[i].scores.length; j++ ){
+            let score = results[i].scores[j]
+            this_person.push(score)
+            if(score !== null){
+                total += (score-par)
+            }
+        }
+        this_person.push(Math.round(total))
+        data.push(this_person)
+    }
+    return data
 }

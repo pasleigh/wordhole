@@ -96,6 +96,7 @@ if($show_edit_block){
         let chart_container_id = 'par_chart_container';
         draw_par_chart(selected_round_data,chart_container_id);
         write_winners_info(selected_round_data);
+        updateTable(selected_round_data)
     });
 </script>
 </body>
