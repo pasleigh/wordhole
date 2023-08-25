@@ -18,14 +18,14 @@ if ($show_edit_block) {
             <h5>Enter wordle scores data</h5>
         </div>
         <div id='edit_body' class='card-body m-2'>
-            This is the body of the edit card
-
+        <div id="body-title">Wordle</div>
             <div style="font-size: small">
             <div id='jspreadsheet_wordle_data'></div>
+            <p>6.9999 = Failed to complete in 6. <BR>7.0001 = Did not send in result<BR>Set to -1 to delete the score</p>
             </div>
             <div class="row">
                 <div class="col-4">
-                    <button type="button" class="btn btn-primary" id="submit_cwt_editor_data">Submit updates</button>
+                    <button type="button" class="btn btn-primary" id="submit_table_data_to_sqlite">Submit updates</button>
                 </div>
             </div>
         </div>
@@ -87,17 +87,6 @@ if ($show_edit_block) {
 <script>
     $(document).ready(function () {
         load_wordle_data('par_chart_container');
-    });
-    $('#round_select').on('change', function () {
-        var i = $(this).find(":selected").val();
-        var name = $(this).find(":selected").text();
-        //alert("Changed " + i + " name");
-        let selected_round_data = all_rounds_data[i];
-
-        let chart_container_id = 'par_chart_container';
-        draw_par_chart(selected_round_data, chart_container_id);
-        write_winners_info(selected_round_data);
-        updateTable(selected_round_data)
     });
 </script>
 </body>

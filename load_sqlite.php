@@ -9,7 +9,8 @@ $index_results = $db->query($query);
 
 while ($round = $index_results->fetchArray()) {
     $round_id = $round['id'];
-    $round_name = "Round " . $round['round_num'];
+    $round_num = $round['round_num'];
+    $round_name = "Round " . $round_num;
 
     // Get the par
     $par = $round['par'];
@@ -43,16 +44,19 @@ while ($round = $index_results->fetchArray()) {
                 $round_results = $db->query($query);
                 $round_rec = $round_results->fetchArray();
 
-                $hole_num = $round_rec['hole_num'];
-                $hole_num = $hole_num - 1;
-                $score = $round_rec['score'];
-                $scores[$hole_num] = $score;
+                if($round_rec) {
+                    $hole_num = $round_rec['hole_num'];
+                    $hole_num = $hole_num - 1;
+                    $score = $round_rec['score'];
+                    $scores[$hole_num] = $score;
+                }
             }
             // fill the 18 holes with null
             for ($i = $numScores; $i < 18; $i++) {
                 $scores[$i] = null;
             }
             $results[] = array(
+                'person_id' => $person_id,
                 'first_name' => $first_name,
                 'family_name' => $family_name,
                 'scores' => $scores
@@ -66,7 +70,8 @@ while ($round = $index_results->fetchArray()) {
         'start_wordle' => $start_wordle,
         'par' => $par,
         'results' => $results,
-        'name' => $round_name
+        'name' => $round_name,
+        'round_num' => $round_num
     );
 
 }

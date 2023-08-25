@@ -1,5 +1,124 @@
 var all_rounds_data;
 var the_chart;
+var current_par
+var current_round_num
+var current_round_id
+var current_round_wordle_start_num
+
+$('#round_select').on('change', function () {
+    var i = $(this).find(":selected").val();
+    //var name = $(this).find(":selected").text();
+    //alert("Changed " + i + " name");
+    current_round_id = i
+
+    let selected_round_data = all_rounds_data[i];
+
+    current_par = selected_round_data.par
+    current_round_num = selected_round_data.round_num
+    current_round_wordle_start_num = selected_round_data.start_wordle
+
+    let chart_container_id = 'par_chart_container';
+    draw_par_chart(selected_round_data, chart_container_id);
+    write_winners_info(selected_round_data);
+    updateTable(selected_round_data)
+});
+
+$('#submit_table_data_to_sqlite').on('click', function () {
+    push_table_data_to_sqlite()
+})
+function push_table_data_to_sqlite(){
+    let alldata = summary_table.getData()
+    var form_data = new FormData();
+    form_data.append('data', JSON.stringify(alldata));
+    form_data.append('round_id',current_round_id+1 );
+    form_data.append('round_num',current_round_num );
+    form_data.append('wordle_start_num',current_round_wordle_start_num );
+    form_data.append('par',current_par );
+    $.ajax({
+        type: 'post',
+        url: './push_table_data_to_sqlite.php',
+        contentType: false,
+        processData: false,
+        data: form_data,
+        dataType: "json",
+        success: function (mydata) {
+
+            // Update the all rounds data
+            /*
+            for(let i = 0; i < alldata.length; i++){
+                for(let j = 0; j < 18 ; j++){
+                    let score = alldata[0][3+j];
+                    if(score < 0){
+                        alldata[0][3+j] = null
+                    }
+                }
+            }
+            all_rounds_data[current_round_id] = alldata
+            updateTable(all_rounds_data[current_round_id])
+
+             */
+            load_wordle_data('par_chart_container')
+            alert("submitted to database")
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('An error occurred... Look at the console (F12 or Ctrl+Shift+I, Console tab) for more information!');
+            console.log('jqXHR.responseText');
+            console.log(jqXHR.responseText);
+            console.log('jqXHR:');
+            console.log(jqXHR);
+            console.log('textStatus:');
+            console.log(textStatus);
+            console.log('errorThrown:');
+            console.log(errorThrown);
+        }
+    })
+}
+
+var cell_changed = function (instance, cell, x, y, value){
+    let par = all_rounds_data[current_round_id].par
+    //let cellName = jspreadsheet.getColumnNameFromId([x, y]);
+    //$('#result').html('New change on cell [' + x + ', ' + y + '] ' + cellName + ' to: ' + value + '');
+    let row_data = summary_table.getRowData(y);
+    let id = row_data[0]
+    let first_name = row_data[1]
+    let family_name = row_data[2]
+    let scores = Array()
+    let new_total = 0
+    for(let i=0;i<18;i++){
+        let score = row_data[3+i]
+        scores.push(score)
+        if(score !== ""){
+            if(score !==null){
+                if(score > 0) {
+                    new_total += (score - par)
+                }
+            }
+        }
+    }
+    let total = row_data[21];
+
+    let alldata = summary_table.getData()
+    //setValueFromCoords: get value from coords
+    //setValueFromCoords([integer], [integer], [string], [bool]);
+    // doing this causes this function to be called in a circular reference
+    //summary_table.setValueFromCoords(21,y,new_total,true)
+
+    // try setting the row
+    // caused same circular ref
+    row_data[21] = Math.round(new_total)
+    //summary_table.setRowData(y, row_data)
+
+    alldata = summary_table.getData()
+    //summary_table.data = alldata
+    table_def.data = alldata
+    $('#jspreadsheet_wordle_data').empty();
+    summary_table = jspreadsheet(document.getElementById('jspreadsheet_wordle_data'), table_def);
+    //alldata[y]=row_data
+    //$('#result').html(JSON.stringify(alldata))
+    //$('#result').append('<BR> id: ' + id, ", home/Int: " + home_int + ', Ethnic desc: '+ethnic_dec+ ', Nationlity: '+nationality_desc);
+    //update_ethnicity_award_data(year,id,home_int,ethnic_dec,nationality_desc);
+}
+
 var table_def = {
     data: null,
     columns: [
@@ -24,7 +143,8 @@ var table_def = {
         {type: 'numeric', width: '49', title: 'Hole 16'},
         {type: 'numeric', width: '49', title: 'Hole 17'},
         {type: 'numeric', width: '49', title: 'Hole 18'},
-        {type: 'numeric', width: '49', title: 'Total'}
+        {type: 'numeric', width: '49', title: 'Total'},
+        {type: 'hidden', title: 'person_id'}
     ],
     nestedHeaders: [
         [
@@ -77,7 +197,7 @@ var table_def = {
     //colAlignments: ['center', 'left', 'left', 'left'] ,
     filters: false,
     search: false,
-    pagination: 30,
+    //pagination: 30,
     contextMenu: false,
     onchange: cell_changed
 }
@@ -106,12 +226,19 @@ function load_wordle_data(chart_container_id) {
                 all_rounds_data = mydata.round_data;
 
                 //alert(mydata.message + "\n" + mydata.file_info);
-                let selected_round_data = all_rounds_data[0];
+                current_round_id = 0
+
+                let selected_round_data = all_rounds_data[current_round_id];
                 let my_chart_container_id = "par_chart_container";
-                draw_par_chart(selected_round_data, my_chart_container_id, 0);
+                draw_par_chart(selected_round_data, my_chart_container_id);
                 write_winners_info(selected_round_data);
 
+                current_par = selected_round_data.par
+                current_round_num = selected_round_data.round_num
+                current_round_wordle_start_num = selected_round_data.start_wordle
+
                 if (document.getElementById('jspreadsheet_wordle_data')) {
+                    $('#body-title').html("<h5>Wordhole round number " + current_round_num + "</h5>")
                     let start_date = selected_round_data.start_date
                     let start_date_split = start_date.split("-")
                     let start_date_d = new Date(start_date_split[2], parseInt(start_date_split[1]) - 1, start_date_split[0], 0, 0, 0)
@@ -333,28 +460,12 @@ function write_winners_info(latest_round_data) {
 
 }
 
-
-var cell_changed = function (instance, cell, x, y, value) {
-    var cellName = jspreadsheet.getColumnNameFromId([x, y]);
-    //$('#result').html('New change on cell [' + x + ', ' + y + '] ' + cellName + ' to: ' + value + '');
-    var row_data = summary_table.getRowData(y);
-    var id = row_data[0]
-    var year = row_data[1]
-    var home_int = row_data[5]
-    var ethnic_dec = row_data[6]
-    var nationality_desc = row_data[7]
-
-    let alldata = summary_table.getData()
-    $('#result').html(JSON.stringify(alldata))
-    //$('#result').append('<BR> id: ' + id, ", home/Int: " + home_int + ', Ethnic desc: '+ethnic_dec+ ', Nationlity: '+nationality_desc);
-    //update_ethnicity_award_data(year,id,home_int,ethnic_dec,nationality_desc);
-}
-
 function updateTable(this_round_data) {
     table_def.data = getRoundDataForTable(this_round_data)
     $('#jspreadsheet_wordle_data').empty();
     summary_table = jspreadsheet(document.getElementById('jspreadsheet_wordle_data'), table_def);
 }
+
 
 function getRoundDataForTable(this_round_data) {
     let data = Array()
@@ -383,6 +494,7 @@ function getRoundDataForTable(this_round_data) {
             }
         }
         this_person.push(Math.round(total))
+        this_person.push(results[i].person_id)
         data.push(this_person)
     }
     return data
