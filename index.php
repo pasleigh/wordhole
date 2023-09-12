@@ -28,6 +28,11 @@ if ($show_edit_block) {
                     <button type="button" class="btn btn-primary" id="submit_table_data_to_sqlite">Submit updates</button>
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col-4">
+                   <A href="./load_xlsx.php" class="btn btn-info"> load the xlsx file into the database</A>
+                </div>
+            </div>
         </div>
     </div>
     HTML;

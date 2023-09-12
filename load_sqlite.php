@@ -4,7 +4,7 @@
 (@include_once("./database_functions.php")) or die("Cannot read database_functions.php file<BR>");
 
 
-$query = "SELECT * FROM w_index WHERE 1";
+$query = "SELECT * FROM w_index WHERE 1 ORDER BY round_num DESC ";
 $index_results = $db->query($query);
 
 while ($round = $index_results->fetchArray()) {
