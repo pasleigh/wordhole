@@ -13,28 +13,16 @@ if ($edit === "edit") {
 $edit_block = "";
 if ($show_edit_block) {
     $edit_block .= <<<HTML
-    <div class='card mb-3'>
-        <div class='card-header'>
-            <h5>Enter wordle scores data</h5>
-        </div>
-        <div id='edit_body' class='card-body m-2'>
-        <div id="body-title">Wordle</div>
-            <div style="font-size: small">
-            <div id='jspreadsheet_wordle_data'></div>
-            <p>6.9999 = Failed to complete in 6. <BR>7.0001 = Did not send in result<BR>Set to -1 to delete the score</p>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <button type="button" class="btn btn-primary" id="submit_table_data_to_sqlite">Submit updates</button>
+        <div class="row">
+                    <div class="col-4">
+                        <button type="button" class="btn btn-primary" id="submit_table_data_to_sqlite">Submit updates</button>
+                    </div>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                   <A href="./load_xlsx.php" class="btn btn-info"> load the xlsx file into the database</A>
+                <div class="row mt-2">
+                    <div class="col-4">
+                        <A href="./load_xlsx.php" class="btn btn-info"> load the xlsx file into the database</A>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
     HTML;
 }
 
@@ -66,7 +54,21 @@ if ($show_edit_block) {
     </div>
     <div id="par_chart_container" style="height: 600px;"></div>
 
-    <div id="edit_block"><?php echo($edit_block); ?></div>
+    <div id="edit_block">
+        <div class='card mb-3'>
+            <div class='card-header'>
+                <h5>Wordhole scores data</h5>
+            </div>
+            <div id='edit_body' class='card-body m-2'>
+                <div id="body-title">Wordle</div>
+                <div style="font-size: small">
+                    <div id='jspreadsheet_wordle_data'></div>
+                    <p>6.9999 = Failed to complete in 6. <BR>7.0001 = Did not send in result<BR>Set to -1 to delete the score</p>
+                </div>
+                <?php echo($edit_block); ?>
+            </div>
+        </div>
+    </div>
 
     <div id="scores"></div>
 </div>
