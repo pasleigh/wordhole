@@ -1,6 +1,11 @@
 <?php
 (@include_once("./database_functions.php")) or die("Cannot read database_functions.php file<BR>");
 
+$reload_main = 0;
+if (array_key_exists('reload', $_GET)) {
+    $reload_main = 1;
+}
+
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -123,5 +128,13 @@ $return_data = array(
     'is_valid' => $is_valid
 );
 
-echo json_encode($return_data);
-exit;
+//echo json_encode($return_data);
+?>
+<script>
+    let reload_main = <?php echo $reload_main; ?>;
+
+    if(reload_main > 0) {
+        window.location.href = 'index.php?e=edit'
+    }
+</script>
+

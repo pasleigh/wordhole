@@ -20,7 +20,7 @@ if ($show_edit_block) {
                 </div>
                 <div class="row mt-2">
                     <div class="col-4">
-                        <A href="./load_xlsx.php" class="btn btn-info"> load the xlsx file into the database</A>
+                        <A href="./load_xlsx.php?reload" class="btn btn-info"> load the xlsx file into the database</A>
                     </div>
                 </div>
     HTML;
