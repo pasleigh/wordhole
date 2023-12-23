@@ -54,7 +54,12 @@ function push_all_round_data_database($db, $round_data)
                     $hole_num = $k + 1;
                     $wordle_num = $wordle_start_num + $k;
                     $total += $score - $par;
-                    $result_id = SubmitScore($db, $round_id, $person_id, $hole_num, $wordle_num, $score, $total);
+                    $update_scores = false;
+                    if($i === 0){
+                        // Update if its the current i.e the first round
+                        $update_scores = true;
+                    }
+                    $result_id = SubmitScore($db, $round_id, $person_id, $hole_num, $wordle_num, $score, $total, $update_scores);
                 }
                 // Do something with the total
                 $this_round_final_scores[] = array(
@@ -113,7 +118,7 @@ function GetRoundID($db, $round_num, $wordle_start_num, $wordle_start_date, $par
     return $id;
 }
 
-function SubmitScore($db, $round_id, $person_id, $hole_num, $wordle_num, $score, $total)
+function SubmitScore($db, $round_id, $person_id, $hole_num, $wordle_num, $score, $total, $update_scores)
 {
     $query = "SELECT * FROM w_results WHERE round_id='$round_id' AND person_id='$person_id' AND hole_num='$hole_num'";
     $results = $db->query($query);
@@ -130,7 +135,9 @@ function SubmitScore($db, $round_id, $person_id, $hole_num, $wordle_num, $score,
                      score='$score', 
                      total='$total' 
                  WHERE id='$score_id'";
-        //$db->query($query);
+        if($update_scores){
+            $db->query($query);
+        }
     } else {
         $query = "INSERT INTO w_results (round_id, person_id, hole_num, wordle_num, score, total) 
                     VALUES ('$round_id', '$person_id', '$hole_num', '$wordle_num', '$score', '$total')";
