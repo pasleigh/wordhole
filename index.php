@@ -26,6 +26,33 @@ if ($show_edit_block) {
     HTML;
 }
 
+$show_upload_block = true;
+if (array_key_exists('upload', $_GET) == false) {
+    $show_upload_block = false;
+}
+
+$upload_block = "";
+if ($show_upload_block) {
+    $upload_block .= <<<HTML
+        <div class="row">
+                    <div class="col-4">
+                        <!--<button type="button" class="btn btn-primary" id="submit_table_data_to_sqlite">Submit updates</button>-->
+                    </div>
+        </div>
+        <div class="row mt-2">
+            <div id="drop-area" class="border rounded d-flex justify-content-center align-items-center"
+                style="height: 200px; cursor: pointer;">
+                <div class="text-center">
+                    <i class="bi bi-cloud-arrow-up-fill text-primary" style="font-size: 48px;"></i>
+                    <p class="mt-3">Drag and drop your Excel file here or click to select a file.</p>
+                </div>
+            </div>
+            <input type="file" id="fileElem" multiple accept=application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/comma-separated-values, text/csv, application/csv" class="d-none">
+
+        </div>
+    HTML;
+}
+
 ?>
 
 <!doctype html>
@@ -37,6 +64,7 @@ if ($show_edit_block) {
     <link rel="icon" type="image/x-icon" href="./wordle_96.jpg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
 <div class="container">
@@ -66,9 +94,11 @@ if ($show_edit_block) {
                     <p>6.9999 = Failed to complete in 6. <BR>7.0001 = Did not send in result<BR>Set to -1 to delete the score</p>
                 </div>
                 <?php echo($edit_block); ?>
+                <?php echo($upload_block); ?>
             </div>
         </div>
     </div>
+
 
     <div id="scores"></div>
 </div>
@@ -91,6 +121,84 @@ if ($show_edit_block) {
 <script src="./frameworks/jsuites/jsuites.js"></script>
 <link rel="stylesheet" href="./frameworks/jsuites/jsuites.css" type="text/css"/>
 
+<script>
+    let dropArea = document.getElementById("drop-area");
+
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    ["dragenter", "dragover"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, highlight, false);
+    });
+
+    ["dragleave", "drop"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    dropArea.addEventListener("drop", handleDrop, false);
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function highlight(e) {
+        dropArea.classList.add("highlight");
+    }
+
+    function unhighlight(e) {
+        dropArea.classList.remove("highlight");
+    }
+
+    function handleDrop(e) {
+        let dt = e.dataTransfer;
+        let files = dt.files;
+        handleFiles(files);
+    }
+
+    function handleFiles(files) {
+        [...files].forEach(uploadFile);
+    }
+
+    function uploadFile(file) {
+        console.log("Uploading", file.name);
+        var form_data = new FormData();
+        form_data.append('file', file);
+        //alert(form_data);
+        $.ajax({
+            url: 'upload_excel.php', // <-- point to server-side PHP script
+            dataType: 'json',  // <-- what to expect back from the PHP script, if anything
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(php_script_response){
+                //alert(php_script_response); // <-- display response from the PHP script, if any
+                console.log("Sever response ", JSON.stringify(php_script_response));
+                alert("Success loading the Excel file.");
+                window.location.href = 'index.php?upload'
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.status);
+                console.log(xhr.responseText);
+                console.log(thrownError);
+                alert("There was an error loading the Excel file.");
+            }
+        });
+    }
+
+    dropArea.addEventListener("click", () => {
+        fileElem.click();
+    });
+
+    let fileElem = document.getElementById("fileElem");
+    fileElem.addEventListener("change", function (e) {
+        handleFiles(this.files);
+    });
+</script>
 <script>
     $(document).ready(function () {
         load_wordle_data('par_chart_container');
