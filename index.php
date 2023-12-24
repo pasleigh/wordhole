@@ -91,7 +91,7 @@ if ($show_upload_block) {
                 <div id="body-title">Wordle</div>
                 <div style="font-size: small">
                     <div id='jspreadsheet_wordle_data'></div>
-                    <p>6.9999 = Failed to complete in 6. <BR>7.0001 = Did not send in result<BR>Set to -1 to delete the score</p>
+                    <p>6.9999 = Failed to complete in 6. <BR>7.0001 = Did not send in result</p>
                 </div>
                 <?php echo($edit_block); ?>
                 <?php echo($upload_block); ?>
@@ -167,6 +167,7 @@ if ($show_upload_block) {
         var form_data = new FormData();
         form_data.append('file', file);
         //alert(form_data);
+        document.body.style.cursor = 'wait';
         $.ajax({
             url: 'upload_excel.php', // <-- point to server-side PHP script
             dataType: 'json',  // <-- what to expect back from the PHP script, if anything
@@ -178,6 +179,7 @@ if ($show_upload_block) {
             success: function(php_script_response){
                 //alert(php_script_response); // <-- display response from the PHP script, if any
                 console.log("Sever response ", JSON.stringify(php_script_response));
+                document.body.style.cursor = 'default';
                 alert("Success loading the Excel file.");
                 window.location.href = 'index.php?upload'
             },
@@ -185,6 +187,7 @@ if ($show_upload_block) {
                 console.log(xhr.status);
                 console.log(xhr.responseText);
                 console.log(thrownError);
+                document.body.style.cursor = 'default';
                 alert("There was an error loading the Excel file.");
             }
         });
