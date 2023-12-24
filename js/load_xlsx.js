@@ -290,8 +290,9 @@ function draw_par_chart(score_data, container_id) {
     let par = parseInt(score_data.par);
     let start_wordle_num = parseInt(score_data.start_wordle);
 
-    myChart.title = "Worldhole : " + score_data.name + ". First hole (" + score_data.start_wordle + ") " + score_data.start_date;
-    myChart.subtitle.text = myChart.title;
+    myChart.title.text = "Wordhole";
+    let subtitle_text = score_data.name + ". First hole (" + score_data.start_wordle + ") " + score_data.start_date;
+    myChart.subtitle.text = subtitle_text;
 
     myChart.series = [];
 
