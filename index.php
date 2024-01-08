@@ -168,6 +168,7 @@ if ($show_upload_block) {
         form_data.append('file', file);
         //alert(form_data);
         document.body.style.cursor = 'wait';
+        document. getElementById("drop-area"). style. cursor = 'wait';
         $.ajax({
             url: 'upload_excel.php', // <-- point to server-side PHP script
             dataType: 'json',  // <-- what to expect back from the PHP script, if anything
@@ -180,6 +181,7 @@ if ($show_upload_block) {
                 //alert(php_script_response); // <-- display response from the PHP script, if any
                 console.log("Sever response ", JSON.stringify(php_script_response));
                 document.body.style.cursor = 'default';
+                document. getElementById("drop-area"). style. cursor = 'pointer';
                 alert("Success loading the Excel file.");
                 window.location.href = 'index.php?upload'
             },
@@ -188,6 +190,7 @@ if ($show_upload_block) {
                 console.log(xhr.responseText);
                 console.log(thrownError);
                 document.body.style.cursor = 'default';
+                document. getElementById("drop-area"). style. cursor = 'pointer';
                 alert("There was an error loading the Excel file.");
             }
         });
