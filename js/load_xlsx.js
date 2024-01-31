@@ -296,6 +296,10 @@ function draw_par_chart(score_data, container_id) {
 
     myChart.series = [];
 
+    var d = new Date();
+    var my_data_string =  d.getFullYear() + '-' + ('0' + (d.getMonth()+1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    myChart.exporting.filename = "wordhole_chart_" + score_data.round_num + "_" + my_data_string;
+
     for (let i = 0; i < score_data.results.length; i++) {
         let name = score_data.results[i].first_name + " " + score_data.results[i].family_name;
         let score_array = Array();
