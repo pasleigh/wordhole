@@ -182,7 +182,7 @@ if ($show_upload_block) {
                 console.log("Sever response ", JSON.stringify(php_script_response));
                 document.body.style.cursor = 'default';
                 document. getElementById("drop-area"). style. cursor = 'pointer';
-                alert("Success loading the Excel file.");
+                //alert("Success loading the Excel file.");
                 window.location.href = 'index.php?upload'
             },
             error: function (xhr, ajaxOptions, thrownError) {
