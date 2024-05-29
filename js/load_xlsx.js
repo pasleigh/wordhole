@@ -426,7 +426,7 @@ function write_winners_info(latest_round_data) {
         html_row += "<div class='row'>";
         html_row += `<strong>Hole: ${i + 1}, (${wordle_num}${wordle_word_str})`;
         html_row += ` Best score: ${winners[i].score}.`;
-        html_row += ` Mean score: ${latest_round_data.mean_scores[wordle_num].toFixed(2)}.`;
+        html_row += ` Mean score: ${parseFloat(latest_round_data.mean_scores[wordle_num]).toFixed(2)}.`;
         //html_row += ` : ${latest_round_data.wordle_words[wordle_num]}.`;
         html_row += `</strong>`;
         //html += "</div>";
