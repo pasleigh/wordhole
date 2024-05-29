@@ -80,6 +80,18 @@ if (isset($_FILES)) {
             $num_holes = 18;
             $start_row = 4;
             $num_start_col = 3;
+
+            // Find the mean row
+            $mean_row = 0;
+            for ($row = $start_row; $row < 100; $row++) {
+                $col = 2;
+                $mean_text = $worksheet->getCell([$col, $row])->getValue();
+                if ($mean_text === 'Mean') {
+                    $mean_row = $row;
+                    break;
+                }
+            }
+            // Get the names and scores
             for ($row = $start_row; $row < 100; $row++) {
                 $col = 1;
                 $first_name = $worksheet->getCell([$col, $row])->getValue();
@@ -107,6 +119,24 @@ if (isset($_FILES)) {
                     'scores' => $scores
                 );
             }
+            // Get the means and wordle words
+            $mean_scores = array();
+            $wordle_words = array();
+            $row = $mean_row;
+            for ($i = 1; $i <= 18; $i++) {
+                $col = $num_start_col + ($i - 1) * 3;
+                $myString = $worksheet->getCell([$col, $row])->getOldCalculatedValue();
+                if ($myString == "") {
+                    $mean_scores[] = null;
+                } else {
+                    $mean_scores[] = floatval($myString);
+                }
+                //echo("mystring: $myString.<BR>");
+                //var_dump($mean_scores);
+                // Get teh wordle word
+                $myString = $worksheet->getCell([$col, $row+1])->getValue();
+                $wordle_words[] = $myString;
+            }
 
             $round_data[] = array(
                 'start_date' => $start_date,
@@ -114,6 +144,8 @@ if (isset($_FILES)) {
                 'start_wordle' => $start_wordle,
                 'par' => $par,
                 'results' => $results,
+                'mean_scores' => $mean_scores,
+                'wordle_words' => $wordle_words,
                 'name' => $worksheet_name
             );
 

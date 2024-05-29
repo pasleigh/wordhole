@@ -32,3 +32,12 @@ $query = "CREATE TABLE IF NOT EXISTS 'w_results' (
                 'total' INTEGER NOT NULL
                 )";
 $results = $db->query($query);
+
+// Answer table
+$query = "CREATE TABLE IF NOT EXISTS 'w_answer' (
+                'id' INTEGER PRIMARY KEY NOT NULL, 
+                'wordle_num' INTEGER NOT NULL, 
+                'wordle_answer' TEXT, 
+                'mean_score' REAL
+                )";
+$results = $db->query($query);

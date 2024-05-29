@@ -13,7 +13,8 @@ var myline_chart = {
     yAxis: {
         title: {
             text: 'Score relative to par'
-        }
+        },
+        tickInterval: 1
     },
 
     xAxis: {

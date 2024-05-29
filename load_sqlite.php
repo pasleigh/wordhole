@@ -64,6 +64,23 @@ while ($round = $index_results->fetchArray()) {
         }
     }
 
+    // get the mean and wordle word data
+    $wordle_words = array();
+    $mean_scores = array();
+    for ($i = 0; $i < 18; $i++) {
+        $wordle_num = $start_wordle+$i;
+        $query = "SELECT * FROM w_answer WHERE wordle_num=$wordle_num";
+        $answers_results = $db->query($query);
+        $answers_rec = $answers_results->fetchArray();
+        if($answers_rec) {
+            $mean_score = $answers_rec['mean_score'];
+            $wordle_word = $answers_rec['wordle_answer'];
+            $mean_scores[$wordle_num] = $mean_score;
+            $wordle_words[$wordle_num] = $wordle_word;
+        }
+    }
+
+
     $round_data[] = array(
         'start_date' => $start_date,
         'start_date_d-m-Y' => $start_date2,
@@ -71,7 +88,9 @@ while ($round = $index_results->fetchArray()) {
         'par' => $par,
         'results' => $results,
         'name' => $round_name,
-        'round_num' => $round_num
+        'round_num' => $round_num,
+        'mean_scores' => $mean_scores,
+        'wordle_words' => $wordle_words
     );
 
 }

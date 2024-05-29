@@ -414,12 +414,21 @@ function write_winners_info(latest_round_data) {
     let winners_count = winners_data.winner_stats;
     //console.log(winners);
     let html = "";
-
+    let wordle_num
     for (i = 0; i < winners.length; i++) {
+        wordle_num = parseInt(latest_round_data.start_wordle) + i
+        let wordle_word_str = ""
+        if(latest_round_data.wordle_words[wordle_num] != "")
+        {
+            wordle_word_str = ` : ${latest_round_data.wordle_words[wordle_num]}`
+        }
         let html_row = "";
         html_row += "<div class='row'>";
-        html_row += `<strong>Hole: ${i + 1}, (${parseInt(latest_round_data.start_wordle) + i})`;
-        html_row += ` best score: ${winners[i].score}.</strong>`;
+        html_row += `<strong>Hole: ${i + 1}, (${wordle_num}${wordle_word_str})`;
+        html_row += ` Best score: ${winners[i].score}.`;
+        html_row += ` Mean score: ${latest_round_data.mean_scores[wordle_num].toFixed(2)}.`;
+        //html_row += ` : ${latest_round_data.wordle_words[wordle_num]}.`;
+        html_row += `</strong>`;
         //html += "</div>";
         //html += "<div class='row'>";
         //html += "<div class='col-2'></div>";
@@ -430,7 +439,7 @@ function write_winners_info(latest_round_data) {
         } else {
             phrase = "people";
         }
-        html_row += ` ${winners[i].names.length} ${phrase} got this score`;
+        html_row += ` ${winners[i].names.length} ${phrase} got this best score`;
         //html += "</div>";
         html_row += "</div>";
         html_row += "<div class='row mb-3'>";
