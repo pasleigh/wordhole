@@ -511,5 +511,31 @@ function getRoundDataForTable(this_round_data) {
         this_person.push(results[i].person_id)
         data.push(this_person)
     }
+    let mean_data_row = Array()
+    mean_data_row.push(' ')
+    mean_data_row.push(' ')
+    mean_data_row.push('Mean')
+    let wordle_num
+    for (let i = 0; i < 18; i++) {
+        wordle_num = parseInt(this_round_data.start_wordle) + i
+        let mean = parseFloat(this_round_data.mean_scores[wordle_num])
+        let mean_str = ''
+        if(mean > 0.01){
+            mean_str =  mean.toFixed(2)
+        }
+        mean_data_row.push(mean_str)
+    }
+    data.push(mean_data_row)
+
+    let wordle_word_row = Array()
+    wordle_word_row.push(' ')
+    wordle_word_row.push(' ')
+    wordle_word_row.push('Solution')
+    for (let i = 0; i < 18; i++) {
+        wordle_num = parseInt(this_round_data.start_wordle) + i
+        wordle_word_row.push(this_round_data.wordle_words[wordle_num])
+    }
+    data.push(wordle_word_row)
+
     return data
 }
