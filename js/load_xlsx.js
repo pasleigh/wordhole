@@ -202,7 +202,7 @@ var table_def = {
     onchange: cell_changed
 }
 
-function load_wordle_data(chart_container_id) {
+function load_wordle_data(chart_container_id, column_chart_container_id) {
     $.ajax({
         type: 'post',
         //url: 'test_pwd.php',
@@ -231,6 +231,7 @@ function load_wordle_data(chart_container_id) {
                 let selected_round_data = all_rounds_data[current_round_id];
                 let my_chart_container_id = "par_chart_container";
                 draw_par_chart(selected_round_data, my_chart_container_id);
+                draw_column_chart(selected_round_data, column_chart_container_id);
                 write_winners_info(selected_round_data);
 
                 current_par = selected_round_data.par
@@ -348,6 +349,52 @@ function draw_par_chart(score_data, container_id) {
         }
     }
     */
+    $('#' + container_id).show();
+    $('#' + container_id).highcharts(myChart);
+
+}
+function draw_column_chart(score_data, container_id) {
+    let myChart = mycolumn_chart;
+
+    let par = parseInt(score_data.par);
+    let start_wordle_num = parseInt(score_data.start_wordle);
+
+    myChart.title.text = "Wordhole Mean Scores";
+    let subtitle_text = score_data.name + ". First hole (" + score_data.start_wordle + ") " + score_data.start_date;
+    myChart.subtitle.text = subtitle_text;
+
+    myChart.series = []
+    // Get the data for this round
+    let mean_data = Array()
+    let wordle_num
+    let this_round_data = score_data
+    for (let i = 0; i < 18; i++) {
+        wordle_num = parseInt(this_round_data.start_wordle) + i
+        let mean = parseFloat(this_round_data.mean_scores[wordle_num])
+        let mean_str = ''
+        if(mean > 0.01){
+            mean_str =  mean.toFixed(2)
+        }
+        mean_data.push(mean)
+    }
+    myChart.series.push(
+        {
+            name: 'Wordle',
+            data: mean_data
+        }
+    )
+
+    let wordle_words = Array()
+    for (let i = 0; i < 18; i++) {
+        wordle_num = parseInt(this_round_data.start_wordle) + i
+        wordle_words.push(this_round_data.wordle_words[wordle_num])
+    }
+    myChart.xAxis.categories = wordle_words
+
+
+    var d = new Date();
+    var my_data_string =  d.getFullYear() + '-' + ('0' + (d.getMonth()+1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    myChart.exporting.filename = "wordhole_mean_scores_chart_" + score_data.round_num + "_" + my_data_string;
     $('#' + container_id).show();
     $('#' + container_id).highcharts(myChart);
 

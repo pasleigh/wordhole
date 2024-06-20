@@ -79,3 +79,71 @@ var myline_chart = {
     }
 
 };
+
+var mycolumn_chart = {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Wordhole mean scores for round ...',
+        align: 'center'
+    },
+    subtitle: {
+        text: 'Score for each Wordle',
+        align: 'center'
+    },
+    xAxis: {
+        categories: ['HELLO', 'SHOOT', 'CHINA', 'SPOON', 'WHELK', 'CLAMP','','','','','','','','','','','',''],
+        crosshair: true,
+        accessibility: {
+            description: 'Wordle word'
+        }
+    },
+    yAxis: {
+        min: 2,
+        max: 6,
+        title: {
+            text: 'Mean Score'
+        }
+    },
+    legend:{
+        enabled: false
+    },
+    tooltip: {
+        formatter: function () {
+            //alert(this);
+            return "<B>Wordle word: " + this.x + "</B><BR>" +  'Mean score: ' + this.y.toFixed(2);
+        }
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        },
+        series:{
+            dataLabels:{
+                useHTML: 'false',
+                enabled: true,
+                format: '{point.y:,.2f}',
+                y: 35,
+                rotation: -90,
+                style:{
+                    useHTML: 'false',
+                    fontWeight: 'normal'
+                }
+            }
+        }
+    },
+    series: [
+        {
+            name: 'Wordle',
+            data: [3.2, 4.2, 2.5, 4.0, 3.6, 3.3,0,0,0,0,0,0,0,0,0,0,0,0]
+        }
+    ],
+    exporting: {
+        filename: 'wordhole_mean_scores_chart',
+        scale: 2,
+        sourceWidth: 1000,
+        //sourceHeight: 600
+    }
+}
