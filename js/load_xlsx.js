@@ -375,7 +375,7 @@ function draw_column_chart(score_data, container_id) {
         if(mean > 0.01){
             mean_str =  mean.toFixed(2)
         }
-        mean_data.push({y:mean, wordle_num: wordle_num})
+        mean_data.push({y:mean, wordle_num: wordle_num })
     }
     myChart.series.push(
         {
