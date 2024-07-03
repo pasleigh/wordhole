@@ -66,8 +66,14 @@ function push_all_round_data_database($db, $round_data)
                     'first_name' => $first_name,
                     'family_name' => $family_name,
                     'final_score' => $total,
-                    ';ast_hole_num' => $k
+                    'last_hole_num' => $k
                 );
+            }
+            // Store the means fo theis
+            $mean_scores = $this_round['mean_scores'];
+            $wordle_words = $this_round['wordle_words'];
+            for ($k = 0; $k < count($mean_scores); $k++) {
+                $result_id = SubmitWordle($db, $wordle_start_num+$k, $mean_scores[$k], $wordle_words[$k]);
             }
         }
         $all_rounds_final_scores[$round_num] = $this_round_final_scores;
@@ -141,6 +147,31 @@ function SubmitScore($db, $round_id, $person_id, $hole_num, $wordle_num, $score,
     } else {
         $query = "INSERT INTO w_results (round_id, person_id, hole_num, wordle_num, score, total) 
                     VALUES ('$round_id', '$person_id', '$hole_num', '$wordle_num', '$score', '$total')";
+        $db->query($query);
+        $score_id = $db->lastInsertRowId();
+    }
+
+    return $score_id;
+}
+function SubmitWordle($db, $wordle_num, $mean_score, $wordle_word)
+{
+    $query = "SELECT * FROM w_answer WHERE wordle_num='$wordle_num'";
+    $results = $db->query($query);
+
+    $score_rec = $results->fetchArray();
+    if ($score_rec) {
+        // return the id
+        $score_id = $score_rec['id'];
+        $query = "UPDATE w_answer SET 
+                     mean_score='$mean_score', 
+                     wordle_answer='$wordle_word' 
+                 WHERE wordle_num='$wordle_num'";
+        if($mean_score){
+            $db->query($query);
+        }
+    } else {
+        $query = "INSERT INTO w_answer (wordle_num, wordle_answer, mean_score) 
+                    VALUES ('$wordle_num', '$wordle_word', '$mean_score')";
         $db->query($query);
         $score_id = $db->lastInsertRowId();
     }

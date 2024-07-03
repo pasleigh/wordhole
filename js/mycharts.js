@@ -13,7 +13,8 @@ var myline_chart = {
     yAxis: {
         title: {
             text: 'Score relative to par'
-        }
+        },
+        tickInterval: 1
     },
 
     xAxis: {
@@ -78,3 +79,90 @@ var myline_chart = {
     }
 
 };
+
+var mycolumn_chart = {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Wordhole mean scores for round ...',
+        align: 'center'
+    },
+    subtitle: {
+        text: 'Score for each Wordle',
+        align: 'center'
+    },
+    xAxis: {
+        categories: ['HELLO', 'SHOOT', 'CHINA', 'SPOON', 'WHELK', 'CLAMP','','','','','','','','','','','',''],
+        crosshair: true,
+        accessibility: {
+            description: 'Wordle word'
+        }
+    },
+    yAxis: {
+        min: 2,
+        max: 6,
+        title: {
+            text: 'Mean Score'
+        }
+    },
+    legend:{
+        enabled: false
+    },
+    tooltip: {
+        formatter: function () {
+            //alert(this);
+            return "<B>Wordle no:  " + this.point.wordle_num + "</BR>Word: " + this.x + "</B><BR>" +  'Mean score: ' + this.y.toFixed(2);
+        }
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        },
+        series:{
+            dataLabels:{
+                useHTML: 'false',
+                enabled: true,
+                format: '{point.y:,.2f}',
+                y: 35,
+                rotation: -90,
+                style:{
+                    useHTML: 'false',
+                    fontWeight: 'normal'
+                }
+            }
+        }
+    },
+    series: [
+        {
+            name: 'Wordle',
+            data: [
+                {y:3.2, wordle_num:101},
+                {y:4.2, wordle_num:102},
+                {y:5.2, wordle_num:103},
+                {y:3.2, wordle_num:104},
+                {y:4.2, wordle_num:105},
+                {y:5.2, wordle_num:106},
+                {y:3.2, wordle_num:107},
+                {y:4.2, wordle_num:108},
+                {y:5.2, wordle_num:109},
+                {y:3.2, wordle_num:110},
+                {y:4.2, wordle_num:111},
+                {y:5.2, wordle_num:112},
+                {y:3.2, wordle_num:113},
+                {y:4.2, wordle_num:114},
+                {y:5.2, wordle_num:115},
+                {y:3.2, wordle_num:116},
+                {y:4.2, wordle_num:117},
+                {y:5.2, wordle_num:118}
+            ]
+        }
+    ],
+    exporting: {
+        filename: 'wordhole_mean_scores_chart',
+        scale: 2,
+        sourceWidth: 1000,
+        //sourceHeight: 600
+    }
+}

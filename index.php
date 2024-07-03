@@ -81,7 +81,8 @@ if ($show_upload_block) {
         <div class="col-md-9"></div>
     </div>
     <div id="par_chart_container" style="height: 600px;"></div>
-
+    <BR>
+    <div id="column_chart_container" style="height: 300px;"></div>
     <div id="edit_block">
         <div class='card mb-3'>
             <div class='card-header'>
@@ -207,7 +208,7 @@ if ($show_upload_block) {
 </script>
 <script>
     $(document).ready(function () {
-        load_wordle_data('par_chart_container');
+        load_wordle_data('par_chart_container','column_chart_container');
     });
 </script>
 </body>

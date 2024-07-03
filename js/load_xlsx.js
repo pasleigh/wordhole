@@ -202,7 +202,7 @@ var table_def = {
     onchange: cell_changed
 }
 
-function load_wordle_data(chart_container_id) {
+function load_wordle_data(chart_container_id, column_chart_container_id) {
     $.ajax({
         type: 'post',
         //url: 'test_pwd.php',
@@ -231,6 +231,7 @@ function load_wordle_data(chart_container_id) {
                 let selected_round_data = all_rounds_data[current_round_id];
                 let my_chart_container_id = "par_chart_container";
                 draw_par_chart(selected_round_data, my_chart_container_id);
+                draw_column_chart(selected_round_data, column_chart_container_id);
                 write_winners_info(selected_round_data);
 
                 current_par = selected_round_data.par
@@ -352,6 +353,52 @@ function draw_par_chart(score_data, container_id) {
     $('#' + container_id).highcharts(myChart);
 
 }
+function draw_column_chart(score_data, container_id) {
+    let myChart = mycolumn_chart;
+
+    let par = parseInt(score_data.par);
+    let start_wordle_num = parseInt(score_data.start_wordle);
+
+    myChart.title.text = "Wordhole Mean Scores";
+    let subtitle_text = score_data.name + ". First hole (" + score_data.start_wordle + ") " + score_data.start_date;
+    myChart.subtitle.text = subtitle_text;
+
+    myChart.series = []
+    // Get the data for this round
+    let mean_data = Array()
+    let wordle_num
+    let this_round_data = score_data
+    for (let i = 0; i < 18; i++) {
+        wordle_num = parseInt(this_round_data.start_wordle) + i
+        let mean = parseFloat(this_round_data.mean_scores[wordle_num])
+        let mean_str = ''
+        if(mean > 0.01){
+            mean_str =  mean.toFixed(2)
+        }
+        mean_data.push({y:mean, wordle_num: wordle_num})
+    }
+    myChart.series.push(
+        {
+            name: 'Wordle',
+            data: mean_data
+        }
+    )
+
+    let wordle_words = Array()
+    for (let i = 0; i < 18; i++) {
+        wordle_num = parseInt(this_round_data.start_wordle) + i
+        wordle_words.push(this_round_data.wordle_words[wordle_num])
+    }
+    myChart.xAxis.categories = wordle_words
+
+
+    var d = new Date();
+    var my_data_string =  d.getFullYear() + '-' + ('0' + (d.getMonth()+1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    myChart.exporting.filename = "wordhole_mean_scores_chart_" + score_data.round_num + "_" + my_data_string;
+    $('#' + container_id).show();
+    $('#' + container_id).highcharts(myChart);
+
+}
 
 function find_winners(score_data) {
     // find the lowest score for each hole
@@ -414,12 +461,21 @@ function write_winners_info(latest_round_data) {
     let winners_count = winners_data.winner_stats;
     //console.log(winners);
     let html = "";
-
+    let wordle_num
     for (i = 0; i < winners.length; i++) {
+        wordle_num = parseInt(latest_round_data.start_wordle) + i
+        let wordle_word_str = ""
+        if(latest_round_data.wordle_words[wordle_num] != "")
+        {
+            wordle_word_str = ` : ${latest_round_data.wordle_words[wordle_num]}`
+        }
         let html_row = "";
         html_row += "<div class='row'>";
-        html_row += `<strong>Hole: ${i + 1}, (${parseInt(latest_round_data.start_wordle) + i})`;
-        html_row += ` best score: ${winners[i].score}.</strong>`;
+        html_row += `<strong>Hole: ${i + 1}, (${wordle_num}${wordle_word_str})`;
+        html_row += ` Best score: ${winners[i].score}.`;
+        html_row += ` Mean score: ${parseFloat(latest_round_data.mean_scores[wordle_num]).toFixed(2)}.`;
+        //html_row += ` : ${latest_round_data.wordle_words[wordle_num]}.`;
+        html_row += `</strong>`;
         //html += "</div>";
         //html += "<div class='row'>";
         //html += "<div class='col-2'></div>";
@@ -430,7 +486,7 @@ function write_winners_info(latest_round_data) {
         } else {
             phrase = "people";
         }
-        html_row += ` ${winners[i].names.length} ${phrase} got this score`;
+        html_row += ` ${winners[i].names.length} ${phrase} got this best score`;
         //html += "</div>";
         html_row += "</div>";
         html_row += "<div class='row mb-3'>";
@@ -502,5 +558,31 @@ function getRoundDataForTable(this_round_data) {
         this_person.push(results[i].person_id)
         data.push(this_person)
     }
+    let mean_data_row = Array()
+    mean_data_row.push(' ')
+    mean_data_row.push(' ')
+    mean_data_row.push('Mean')
+    let wordle_num
+    for (let i = 0; i < 18; i++) {
+        wordle_num = parseInt(this_round_data.start_wordle) + i
+        let mean = parseFloat(this_round_data.mean_scores[wordle_num])
+        let mean_str = ''
+        if(mean > 0.01){
+            mean_str =  mean.toFixed(2)
+        }
+        mean_data_row.push(mean_str)
+    }
+    data.push(mean_data_row)
+
+    let wordle_word_row = Array()
+    wordle_word_row.push(' ')
+    wordle_word_row.push(' ')
+    wordle_word_row.push('Solution')
+    for (let i = 0; i < 18; i++) {
+        wordle_num = parseInt(this_round_data.start_wordle) + i
+        wordle_word_row.push(this_round_data.wordle_words[wordle_num])
+    }
+    data.push(wordle_word_row)
+
     return data
 }
