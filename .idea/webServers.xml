@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="77e4c4a9-9dc1-4b27-ae61-dac43289e48d" name="www.sleigh-munoz.co.uk" url="http://www.rheologic.co.uk">
+        <fileTransfer rootFolder="/var/www/vhosts/sleigh-munoz.co.uk" accessType="SFTP" host="www.sleigh-munoz.co.uk" port="2020" sshConfigId="d87c9ae9-ae0e-4441-9e9e-f3c119f53d7e" sshConfig="andy@www.sleigh-munoz.co.uk:2020 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

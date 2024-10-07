@@ -18,7 +18,9 @@ $('#round_select').on('change', function () {
     current_round_wordle_start_num = selected_round_data.start_wordle
 
     let chart_container_id = 'par_chart_container';
+    let column_chart_container_id = 'column_chart_container';
     draw_par_chart(selected_round_data, chart_container_id);
+    draw_column_chart(selected_round_data, column_chart_container_id);
     write_winners_info(selected_round_data);
     updateTable(selected_round_data)
 });
@@ -229,8 +231,9 @@ function load_wordle_data(chart_container_id, column_chart_container_id) {
                 current_round_id = 0
 
                 let selected_round_data = all_rounds_data[current_round_id];
-                let my_chart_container_id = "par_chart_container";
-                draw_par_chart(selected_round_data, my_chart_container_id);
+                //let chart_container_id = "par_chart_container";
+                //let column_chart_container_id = "column_chart_container";
+                draw_par_chart(selected_round_data, chart_container_id);
                 draw_column_chart(selected_round_data, column_chart_container_id);
                 write_winners_info(selected_round_data);
 
@@ -305,6 +308,8 @@ function draw_par_chart(score_data, container_id) {
         let name = score_data.results[i].first_name + " " + score_data.results[i].family_name;
         let score_array = Array();
         let running_total = 0;
+        score_array.push({x: start_wordle_num-1, y: 0, v: 0, h: 0, c: ''});
+
         for (let j = 0; j < score_data.results[i].scores.length; j++) {
             let x = start_wordle_num + j;
             let y;

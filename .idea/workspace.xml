@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="98c6bab4-0235-4058-96d8-5c15da406a73" name="Changes" comment="updated the load sqlite so that it gets the rounds in descending order. And tring to sort out the index.php on work comp to not prevent updates">
+      <change afterPath="$PROJECT_DIR$/../TestExcelSqliteJS/js/jswasm/sqlite3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_09_2023_12_35_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_09_2023_12_35_[Changes]/wordhole_records.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_09_2023_12_35__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sshConfigs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wordhole01.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/load_xlsx.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/load_xlsx.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wordhole_records.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/wordhole_records.xlsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/vendor/maennchen/zipstream-php" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/markbaker/complex" />
+      <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/vendor/markbaker/matrix" />
+      <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
+      <path value="$PROJECT_DIR$/vendor/phpoffice/phpspreadsheet" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-client" />
+    </include_path>
+  </component>
+  <component name="ProjectId" id="2U78LnPTqNNjHPqy5E98L6pug4l" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/xampp/htdocs_old/wordhole",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "project.propVCSSupport.CommitDialog",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory",
+      "repository"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\wordhole" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="98c6bab4-0235-4058-96d8-5c15da406a73" name="Changes" comment="" />
+      <created>1692279204107</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1692279204107</updated>
+      <workItem from="1692279205206" duration="3156000" />
+      <workItem from="1692286232070" duration="1237000" />
+      <workItem from="1692365079615" duration="10793000" />
+      <workItem from="1692784031676" duration="6413000" />
+      <workItem from="1694518500716" duration="2164000" />
+      <workItem from="1694618417803" duration="1479000" />
+      <workItem from="1699001507530" duration="683000" />
+      <workItem from="1701778798351" duration="39000" />
+      <workItem from="1705395161083" duration="2811000" />
+      <workItem from="1728315105595" duration="1326000" />
+    </task>
+    <task id="LOCAL-00001" summary="second commit with all of the base files added">
+      <created>1692279700465</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1692279700465</updated>
+    </task>
+    <task id="LOCAL-00002" summary="phpSpreadsheet now used and PHPExcel eliminated.">
+      <created>1692280918158</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1692280918158</updated>
+    </task>
+    <task id="LOCAL-00003" summary="mods for date and exported image size&#10;corrected the missing first day">
+      <created>1692287445250</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1692287445250</updated>
+    </task>
+    <task id="LOCAL-00004" summary="started implementation of SQLite version - pushing excel into db">
+      <created>1692372937873</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1692372937873</updated>
+    </task>
+    <task id="LOCAL-00005" summary="old  indeix.php commit">
+      <created>1692696581832</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1692696581832</updated>
+    </task>
+    <task id="LOCAL-00006" summary="old  indeix.php commit">
+      <created>1692697395409</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1692697395409</updated>
+    </task>
+    <task id="LOCAL-00007" summary="added data displaying in table - todo the push to db">
+      <created>1692801039416</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1692801039416</updated>
+    </task>
+    <task id="LOCAL-00008" summary="added data displaying in table - todo the push to db">
+      <created>1692801268223</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1692801268223</updated>
+    </task>
+    <task id="LOCAL-00009" summary="updated the load sqlite so that it gets the rounds in descending order. And tring to sort out the index.php on work comp to not prevent updates">
+      <created>1694520010054</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1694520010054</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="second commit with all of the base files added" />
+    <MESSAGE value="phpSpreadsheet now used and PHPExcel eliminated." />
+    <MESSAGE value="mods for date and exported image size&#10;corrected the missing first day" />
+    <MESSAGE value="started implementation of SQLite version - pushing excel into db" />
+    <MESSAGE value="old  indeix.php commit" />
+    <MESSAGE value="added data displaying in table - todo the push to db" />
+    <MESSAGE value="updated the load sqlite so that it gets the rounds in descending order. And tring to sort out the index.php on work comp to not prevent updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated the load sqlite so that it gets the rounds in descending order. And tring to sort out the index.php on work comp to not prevent updates" />
+  </component>
+</project>
